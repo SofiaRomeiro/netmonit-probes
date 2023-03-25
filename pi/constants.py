@@ -11,8 +11,8 @@ LOCAL_DB_NAME = 'local_db'
 MAIN_DB_NAME = 'main_db'
 LOCAL_DB_USER = 'pi'
 LOCAL_DB_PWD = 'raspberry'
-LOCAL_DB_IP = '172.20.0.10'
+LOCAL_DB_IP = '172.30.0.10'
 ETH0_INTERFACE = 'enp0s3' # CHANGE 4 RPI ones
-WLAN0_INTERFACE = 'enp0s3' # CHANGE 4 RPI ones
+WLAN0_INTERFACE = 'enp0s3' # CHANGE 4 RPI ones - IRRELEVANT
 
 LOCAL_DB_CONNECTION_STRING = "dbname=%s user=%s password=%s host=%s" % (LOCAL_DB_NAME, LOCAL_DB_USER, LOCAL_DB_PWD, LOCAL_DB_IP)

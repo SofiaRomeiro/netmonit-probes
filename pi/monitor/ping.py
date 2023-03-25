@@ -71,7 +71,8 @@ def pingFromInterface(interface, number_of_pings):
 
 def monitorPing():
     try:
-        gateways = netifaces.gateways()    
+        gateways = netifaces.gateways()  
+        print("Gateways: " + str(gateways))  
         interface = gateways['default'][netifaces.AF_INET][1]
 
         packet_loss = pingFromInterface(interface, 5)

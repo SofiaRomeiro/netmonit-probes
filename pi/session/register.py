@@ -1,5 +1,6 @@
 import requests
 import psycopg2
+import netifaces
 from datetime import datetime
 import netifaces as ni
 from getmac import get_mac_address as getMacAddress
@@ -21,6 +22,8 @@ def getGateway():
     return gateways['default'][2][0]
 
 def registration():
+
+    interfaces = netifaces.interfaces()
 
     ip = getIPAddress()
 

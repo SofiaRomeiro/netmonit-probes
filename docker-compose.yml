@@ -14,18 +14,21 @@ services:
       - ./database/local_database.dev.env
     networks:
       local_network:
-        ipv4_address: 172.20.0.10
+        ipv4_address: 172.30.0.10
   pi:
     build: ./pi
     image: netmonit-probe
-    container-name: probe
+    container_name: probe
     hostname: localhost
+    depends_on:
+      - local_db
     ports: 
-      -8082
+      - 8082
     restart: unless-stopped
+    network_mode: host
 
 networks:
   local_network:
     ipam:
       config:
-        - subnet: 172.20.0.0/24
+        - subnet: 172.30.0.0/16
