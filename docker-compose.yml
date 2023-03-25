@@ -1,0 +1,31 @@
+version: '3.3'
+
+services:
+  local_db:
+    image: postgres:alpine
+    container_name: local_postgres
+    command: postgres -c 'max_connections=50'
+    ports:
+      - 5432:5431
+    restart: unless-stopped
+    volumes:
+      - ./database/dumps/init_pi.sql:/docker-entrypoint-initdb.d/init_pi.sql
+    env_file:
+      - ./database/local_database.dev.env
+    networks:
+      local_network:
+        ipv4_address: 172.20.0.10
+  pi:
+    build: ./pi
+    image: netmonit-probe
+    container-name: probe
+    hostname: localhost
+    ports: 
+      -8082
+    restart: unless-stopped
+
+networks:
+  local_network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
