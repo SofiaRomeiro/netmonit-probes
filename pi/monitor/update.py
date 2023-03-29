@@ -31,19 +31,47 @@ def retrieveDataFromEvents():
     
     return id, result
 
-def retrieveDataFromPerformance():
+def retrieveDataFromExternalPerformance():
 
     result = None
     id = getMacAddress()
     configs = Configurations()  
-    last_updated = configs.last_updated_performance
+    last_updated = configs.last_updated_external_performance
 
     print(f"[LOG Update] Last updated at {last_updated}")
 
     try:
         connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
         cursor = connection.cursor()
-        query = "SELECT * FROM performance WHERE (creation_date > (%s)::timestamp)"  
+        query = "SELECT * FROM externalPerformance WHERE (creation_date > (%s)::timestamp)"  
+        data = (last_updated,)  
+        cursor.execute(query, data)
+        result = cursor.fetchall()
+        cursor.close()
+        connection.close() 
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    finally:
+        if connection is not None:
+            connection.close()
+
+    print("Query result:" + str(result))
+    
+    return id, result
+
+def retrieveDataFromInternalPerformance():
+
+    result = None
+    id = getMacAddress()
+    configs = Configurations()  
+    last_updated = configs.last_updated_internal_performance
+
+    print(f"[LOG Update] Last updated at {last_updated}")
+
+    try:
+        connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
+        cursor = connection.cursor()
+        query = "SELECT * FROM internalPerformance WHERE (creation_date > (%s)::timestamp)"  
         data = (last_updated,)  
         cursor.execute(query, data)
         result = cursor.fetchall()

@@ -21,6 +21,6 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-*/5 * * * * python network-monitoring-raspberry/client_scripts/monitor.py >> /tmp/monitor.log 2>&1
-*/5 * * * * sleep 10; python network-monitoring-raspberry/client_scripts/update.py >> /tmp/update.log 2>&1
-*/5 * * * * python network-monitoring-raspberry/client_scripts/check_ip.py >> /tmp/check_ip.log 2>&1
+*/10 * * * * python network-monitoring-raspberry/client_scripts/monitor.py >> /tmp/monitor.log 2>&1
+*/10 * * * * sleep 10; python network-monitoring-raspberry/client_scripts/update.py >> /tmp/update.log 2>&1
+*/10 * * * * python network-monitoring-raspberry/client_scripts/check_ip.py >> /tmp/check_ip.log 2>&1

@@ -11,7 +11,8 @@ def setConfigurations(dg, timestamp):
    configs = Configurations()
    configs.destination_ip = dg
    configs.last_updated_monitor = timestamp
-   configs.last_updated_performance = timestamp
+   configs.last_updated_external_performance = timestamp
+   configs.last_updated_internal_performance = timestamp
 
 def getIPAddress():
     ifaces = ps.net_if_addrs()
