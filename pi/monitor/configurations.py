@@ -4,8 +4,8 @@ from enum import Enum
 class Configurations:
 
     destination_ip: str
-    last_updated_monitor: datetime = datetime.now()
-    last_updated_performance: datetime = datetime.now()
+    last_updated_monitor: datetime
+    last_updated_performance: datetime
     
     def __new__(cls):
         if not hasattr(cls, 'instance'):

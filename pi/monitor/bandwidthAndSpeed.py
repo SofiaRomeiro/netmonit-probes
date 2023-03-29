@@ -3,6 +3,7 @@ sys.path.append('..')
 import speedtest
 import psycopg2
 from constants import *
+import iperf3
 
 def registResult(download, upload, latency, destinationHost, timestamp, bytesSent, bytesReceived):
     try:
@@ -49,6 +50,12 @@ def measurePerformance():
     timestamp = speedTestResults['timestamp']
     bytesSent = speedTestResults['bytes_sent']
     bytesReceived = speedTestResults['bytes_received']
+
+    client = iperf3.Client()
+    client.server_hostname="192.168.137.208"
+    client.port = 2345
+    client.json_output = True
+    result = client.run()
 
     registResult(download, upload, latency, destinationHost, timestamp, bytesSent, bytesReceived)
     

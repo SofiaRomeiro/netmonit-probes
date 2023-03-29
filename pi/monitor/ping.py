@@ -1,4 +1,5 @@
 import netifaces
+from datetime import datetime
 import psycopg2
 import pingparsing
 import numpy as np
@@ -35,8 +36,8 @@ def registerPingResult(destination_ip, max, min, avg, packets_sent, packets_rece
     try:
         connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
         cursor = connection.cursor()
-        query = f"INSERT INTO events (creation_date, destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, jitter, interface) VALUES (NOW(), %s, %s, %s, %s, %s, %s, %s, %s, %s);"    
-        data = (destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, jitter, interface)
+        query = f"INSERT INTO events (creation_date, destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, jitter, interface) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"    
+        data = (datetime.now(), destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, jitter, interface)
         cursor.execute(query, data)
         connection.commit()
         cursor.close()

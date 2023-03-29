@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS ping CASCADE;
 DROP TABLE IF EXISTS events CASCADE;
 
 CREATE TABLE events (
-    creation_date TIMESTAMP,
+    creation_date TIMESTAMP WITHOUT TIME ZONE,
     destination_ip VARCHAR(100) NOT NULL,
     max NUMERIC,
     min NUMERIC,
@@ -16,7 +16,7 @@ CREATE TABLE events (
 );
 
 CREATE TABLE performance (
-    creation_date TIMESTAMP,
+    creation_date TIMESTAMP WITHOUT TIME ZONE,
     upload_speed INTEGER,
     download_speed INTEGER,
     latency INTEGER,

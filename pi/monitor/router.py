@@ -1,7 +1,8 @@
 import requests
 import json
+from datetime import datetime
 from fastapi import APIRouter
-from monitor.configurations import Configurations
+from monitor.configurations import Configurations, TypeOfUpdate
 from monitor.ping import monitorPing
 from monitor.update import retrieveDataFromEvents as updateMonitor
 from monitor.update import retrieveDataFromPerformance as updatePerformance
@@ -9,21 +10,31 @@ from monitor.check_ip import monitorUpdateIp as updateIp
 from monitor.bandwidthAndSpeed import measurePerformance
 from monitor.change_dest_ping import monitorChangeDestPing as changeDestPing
 from env import SERVER_PORT, SERVER_HOST
+from constants import SUCCESS
 
 router = APIRouter()
 
 configs = Configurations()
 
+def updateConfigurations(type):
+    if (type == TypeOfUpdate.MONITOR):
+        configs.last_updated_monitor = datetime.now()
+    elif (type == TypeOfUpdate.PERFORMANCE):
+        configs.last_updated_performance = datetime.now()
+
 @router.get("/ping")
 def pingController():
     return monitorPing()
 
-@router.get("/update/monitor")
+@router.get("/update/ping")
 def updateMonitorController():
+
+    #define if is a local update or a remote update
     id, result = updateMonitor()
+    print("[LOG Router - Update Ping] Result: " + str(result))
     payload_list = []
     for res in result:
-        time = str(res[0].now())
+        time = str(res[0])
         max = str(res[2])
         min = str(res[3])
         avg = str(res[4])
@@ -50,8 +61,12 @@ def updateMonitorController():
 
     print("[LOG] Payload: " + payload)
 
-    req = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/monitor", json=json.loads(payload))
-    return req.status_code
+    response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/monitor", json=json.loads(payload))
+    if (response.status_code == SUCCESS):
+        updateConfigurations(TypeOfUpdate.MONITOR)
+        return response.status_code
+    else:
+        return f"{str(response.status_code)}: {str(response.status)}"
 
 @router.get("/check-ip")
 def checkIpController():
@@ -90,8 +105,12 @@ def updatePerformanceController():
 
     print("[LOG] Payload: " + payload)
 
-    req = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance", json=json.loads(payload))
-    return req.status_code
+    response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance", json=json.loads(payload))
+    if (response.status_code == SUCCESS):
+        updateConfigurations(TypeOfUpdate.PERFORMANCE)
+        return response.status_code
+    else:
+        return f"{str(response.status_code)}: {str(response.status)}"
 
 # receives request from main-server
 @router.put("/change-dest-ip/{ip_address}")
