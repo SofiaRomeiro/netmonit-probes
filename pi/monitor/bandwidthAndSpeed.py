@@ -2,6 +2,7 @@ import sys
 sys.path.append('..')
 import speedtest
 import psycopg2
+from datetime import datetime
 from constants import *
 from monitor.configurations import ProtocolOfPerformanceTest
 from env import *
@@ -27,18 +28,32 @@ def registExternalResult(download, upload, latency, destinationHost, timestamp, 
 
 def registInternalResult(creation_date, protocol, remote_host, jitter_ms, packet_loss, bytes_sent, bytes_received, sent_Mbps, received_Mbps):
     try:
+        #filter by protocol
+        query = ""
+        data = None
+        if (protocol == ProtocolOfPerformanceTest.TCP):
+            query = f"INSERT INTO internalPerformance (creation_date, protocol, \
+            bytes_sent, jitter, packet_loss, sent_Mbps, destination_host) \
+            VALUES (%s, %s, %s, %s, %s, %s, %s);"  
+            data = (creation_date, "TCP", bytes_sent, jitter_ms, packet_loss, \
+                sent_Mbps, remote_host)
+        else:        
+            query = f"INSERT INTO internalPerformance (creation_date, protocol, \
+            bytes_sent, bytes_received, sent_Mbps, received_Mbps, destination_host) \
+            VALUES (%s, %s, %s, %s, %s, %s, %s);"    
+            data = (creation_date, "UDP", bytes_sent, bytes_received, \
+                    sent_Mbps, received_Mbps, remote_host)
+            
+        for value in data:
+            print(f"Value: {value}")
+            
         connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
         cursor = connection.cursor()
-        query = f"INSERT INTO internalPerformance (creation_date, upload_speed, \
-            download_speed, latency, bytes_sent, bytes_received, destination_host) \
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"    
-        data = (creation_date, protocol, bytes_sent, bytes_received, jitter_ms, packet_loss, \
-                sent_Mbps, received_Mbps, remote_host)
         cursor.execute(query, data)
         connection.commit()
         cursor.close()
     except Exception as e:
-        print(f"[registResult(...)] An error occurred: {e}")
+        print(f"[LOG registInternalResult(...)] An error occurred: {e}")
     finally:
         if connection is not None:
             connection.close()
@@ -84,7 +99,7 @@ def speedTest(server):
 def parseUDP(res):
     print(f"[LOG] Result: {res}")
     try:
-        creation_date = res['start']['timestamp']['time']
+        creation_date = datetime.now()
         remote_host = res['start']['connected'][0]['remote_host']
         sent_bytes = res['end']['sum_sent']['bytes'] 
         received_bytes = res['end']['sum_received']['bytes']
@@ -92,23 +107,22 @@ def parseUDP(res):
         sent_Mbps = res['end']['sum_sent']['bits_per_second'] / 1000000000
         received_Mbps = res['end']['sum_received']['bits_per_second'] / 1000000000
 
-        return registInternalResult(creation_date, 'UDP', remote_host, 'NULL', 'NULL', sent_bytes, received_bytes, sent_Mbps, received_Mbps)
+        return registInternalResult(creation_date, ProtocolOfPerformanceTest.UDP, remote_host, 'NULL', 'NULL', sent_bytes, received_bytes, sent_Mbps, received_Mbps)
     except Exception as e:
         print(f"[LOG Error] {str(e)}")
 
 def parseTCP(res):
     print(f"[LOG] Result: {res}")
     try:
-        creation_date = res['start']['timestamp']['time']
+        creation_date = datetime.now()
         remote_host = res['start']['connected'][0]['remote_host']
-
         jitter_ms = round(float(res['end']['sum']['jitter_ms']), 3)
         packet_loss = round(float(res['end']['sum']['lost_percent']), 3)
         bytes = res['end']['sum']['bytes'] 
         #bits
         Mbps = res['end']['sum']['bits_per_second'] / 1000000000
 
-        return registInternalResult(creation_date, 'TCP', remote_host, jitter_ms, packet_loss, bytes, None, Mbps, None)    
+        return registInternalResult(creation_date, ProtocolOfPerformanceTest.TCP, remote_host, jitter_ms, packet_loss, bytes, None, Mbps, None)    
     except Exception as e:
         print(f"[LOG Error] {str(e)}")
 
@@ -132,7 +146,10 @@ def measureExternalPerformance():
     registExternalResult(download, upload, latency, destinationHost, timestamp, bytesSent, bytesReceived)
 
 def measureInternalPerformance():
-    result = iPerfTest(ProtocolOfPerformanceTest.TCP)
-    result_json = json.loads(str(result))
-    testParserAndRegister(ProtocolOfPerformanceTest.TCP, result_json)
+    try:
+        result = iPerfTest(ProtocolOfPerformanceTest.TCP)
+        result_json = json.loads(str(result))
+        testParserAndRegister(ProtocolOfPerformanceTest.TCP, result_json)
+    except Exception as e:
+        print("[LOG Error] Internal Performance: " + str(e.with_traceback))
     

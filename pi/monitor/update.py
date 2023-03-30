@@ -1,5 +1,6 @@
 import psycopg2
 from constants import *
+from datetime import datetime
 from getmac import get_mac_address as getMacAddress
 from monitor.configurations import Configurations
 
@@ -66,7 +67,7 @@ def retrieveDataFromInternalPerformance():
     configs = Configurations()  
     last_updated = configs.last_updated_internal_performance
 
-    print(f"[LOG Update] Last updated at {last_updated}")
+    print(f"[LOG Update Internal Performance] Last updated at {last_updated}\n Now is {datetime.now()}")
 
     try:
         connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)

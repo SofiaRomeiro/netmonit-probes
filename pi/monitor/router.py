@@ -43,32 +43,32 @@ def performanceController():
     return measureExternalPerformance()
 
 @router.get("/update/performance/internal")
-def updatePerformanceController():   
+def updateInternalPerformanceController():   
     
     payload = updatePerformanceOperation(TypeOfPerformanceTest.INTERNAL)
 
     print("[LOG - Router] Performance GET Payload: " + payload)
 
-    response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance", json=json.loads(payload))
+    response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance/internal", json=json.loads(payload))
     if (response.status_code == SUCCESS):
         updateConfigurations(TypeOfUpdate.EXTERNAL_PERFORMANCE)
         return response.status_code
     else:
-        return f"{str(response.status_code)}: {str(response.status)}"
+        return f"{str(response.status_code)}: {str(response.text)}"
     
 @router.get("/update/performance/external")
-def updatePerformanceController():   
+def updateExternalPerformanceController():   
     
     payload = updatePerformanceOperation(TypeOfPerformanceTest.EXTERNAL)
 
     print("[LOG - Router] Performance GET Payload: " + payload)
 
-    response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance", json=json.loads(payload))
+    response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance/external", json=json.loads(payload))
     if (response.status_code == SUCCESS):
         updateConfigurations(TypeOfUpdate.EXTERNAL_PERFORMANCE)
         return response.status_code
     else:
-        return f"{str(response.status_code)}: {str(response.status)}"
+        return f"{str(response.status_code)}: {str(response.text)}"
 
 # Requests from Server
 
@@ -77,27 +77,54 @@ def changeDestPingController(ip_address: str):
     return changeDestPing(ip_address, configs)
 
 @router.post("/update/ping")
-def changeDestPingController():
+async def changeDestPingController():
     payload = updatePingOperation()
     print("[LOG - Router] Update POST Payload: " + payload)
 
-    response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/monitor", json=json.loads(payload))
-    if (response.status_code == SUCCESS):
-        updateConfigurations(TypeOfUpdate.MONITOR)
-        return response.status_code
-    else:
-        return f"{str(response.status_code)}: {str(response.status)}"
+    try:
+        response = await requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/monitor", json=json.loads(payload))
+        if (response.status_code == SUCCESS):
+            updateConfigurations(TypeOfUpdate.MONITOR)
+            return response.status_code
+        else:
+            return f"{str(response.status_code)}: {str(response.status)}"
+    except Exception as e:
+        print(f"[LOG] Error: {str(e.with_traceback)}")
 
-@router.post("/update/performance")
+@router.post("/update/performance/external")
+async def updatePerformanceController():   
+    
+    payload = updatePerformanceOperation(TypeOfPerformanceTest.INTERNAL)
+
+    print("[LOG - Router] Performance GET Payload: " + payload)
+
+    try:
+        response = await requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance", json=json.loads(payload))
+        if (response.status_code == SUCCESS):
+            updateConfigurations(TypeOfUpdate.EXTERNAL_PERFORMANCE)
+            return response.status_code
+        else:
+            return f"{str(response.status_code)}: {str(response.text)}"
+    except Exception as e:
+        print(f"[LOG] Error: {str(e.with_traceback)}")
+    
+@router.post("/update/performance/internal")
 def updatePerformanceController():   
     
-    payload = updatePerformanceOperation()
+    payload = updatePerformanceOperation(TypeOfPerformanceTest.INTERNAL)
 
-    print("[LOG - Router] Performance POST Payload: " + payload)
+    print("[LOG - Router] Performance GET Payload: " + json.loads(payload))
 
-    response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance", json=json.loads(payload))
-    if (response.status_code == SUCCESS):
-        updateConfigurations(TypeOfUpdate.EXTERNAL_PERFORMANCE)
-        return response.status_code
-    else:
-        return f"{str(response.status_code)}: {str(response.status)}"
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+
+    try:
+        response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance", data=json.dumps(json.loads(payload)), headers=headers)
+        print(f"Response: {str(response.status_code)}: {str(response.text)}")
+        if (response.status_code == SUCCESS):
+            updateConfigurations(TypeOfUpdate.EXTERNAL_PERFORMANCE)
+            print(f"Response: {str(response.status_code)}: {str(response.text)}")
+        else:
+            print(f"Response: {str(response.status_code)}: {str(response.text)}")  
+    except Exception as e:
+        print(f"[LOG] Error: {str(e.with_traceback)}")
+    

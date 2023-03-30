@@ -54,7 +54,7 @@ def registration():
     payload = {"id": mac,
                 "location": PI_LOCATION, 
                 "ip": ip, 
-                #"interface": interface,
+                "interface": interface,
                 "model": PI_MODEL,
                 "gateway": dg
                 }
