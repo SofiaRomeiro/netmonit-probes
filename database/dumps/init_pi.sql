@@ -1,5 +1,6 @@
-DROP TABLE IF EXISTS ping CASCADE;
 DROP TABLE IF EXISTS events CASCADE;
+DROP TABLE IF EXISTS externalPerformance CASCADE;
+DROP TABLE IF EXISTS internalPerformance CASCADE;
 
 CREATE TABLE events (
     creation_date TIMESTAMP WITHOUT TIME ZONE,
@@ -17,11 +18,11 @@ CREATE TABLE events (
 
 CREATE TABLE externalPerformance (
     creation_date TIMESTAMP WITHOUT TIME ZONE,
-    upload_speed INTEGER,
-    download_speed INTEGER,
-    latency INTEGER,
-    bytes_sent INTEGER,
-    bytes_received INTEGER,
+    upload_speed NUMERIC,
+    download_speed NUMERIC,
+    latency NUMERIC,
+    bytes_sent BIGINT,
+    bytes_received BIGINT,
     destination_host VARCHAR(200), 
     PRIMARY KEY (creation_date)
 );
@@ -29,12 +30,12 @@ CREATE TABLE externalPerformance (
 CREATE TABLE internalPerformance (
     creation_date TIMESTAMP WITHOUT TIME ZONE,
     protocol VARCHAR(10),
-    bytes_sent INTEGER,
-    bytes_received INTEGER,
-    jitter INTEGER,
-    packet_loss INTEGER,    
-    sent_Mbps INTEGER,
-    received_Mbps INTEGER,
+    bytes_sent BIGINT,
+    bytes_received BIGINT,
+    jitter NUMERIC,
+    packet_loss NUMERIC,    
+    sent_Mbps NUMERIC,
+    received_Mbps NUMERIC,
     destination_host VARCHAR(200),
     PRIMARY KEY (creation_date)
 );
