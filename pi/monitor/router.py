@@ -1,3 +1,4 @@
+import time
 import requests
 import json
 from fastapi import APIRouter
@@ -35,11 +36,11 @@ def checkIpController():
     return updateIp()
 
 @router.get("/performance/internal")
-def performanceController():
+def internalPerformanceController():
     return measureInternalPerformance()
 
 @router.get("/performance/external")
-def performanceController():
+def externalPerformanceController():
     return measureExternalPerformance()
 
 @router.get("/update/performance/internal")
@@ -49,9 +50,10 @@ def updateInternalPerformanceController():
 
     print("[LOG - Router] Performance GET Payload: " + payload)
 
+    time.sleep(0.01)
     response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance/internal", json=json.loads(payload))
     if (response.status_code == SUCCESS):
-        updateConfigurations(TypeOfUpdate.EXTERNAL_PERFORMANCE)
+        updateConfigurations(TypeOfUpdate.INTERNAL_PERFORMANCE)
         return response.status_code
     else:
         return f"{str(response.status_code)}: {str(response.text)}"
@@ -91,23 +93,6 @@ async def changeDestPingController():
     except Exception as e:
         print(f"[LOG] Error: {str(e.with_traceback)}")
 
-@router.post("/update/performance/external")
-async def updatePerformanceController():   
-    
-    payload = updatePerformanceOperation(TypeOfPerformanceTest.INTERNAL)
-
-    print("[LOG - Router] Performance GET Payload: " + payload)
-
-    try:
-        response = await requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance", json=json.loads(payload))
-        if (response.status_code == SUCCESS):
-            updateConfigurations(TypeOfUpdate.EXTERNAL_PERFORMANCE)
-            return response.status_code
-        else:
-            return f"{str(response.status_code)}: {str(response.text)}"
-    except Exception as e:
-        print(f"[LOG] Error: {str(e.with_traceback)}")
-    
 @router.post("/update/performance/internal")
 def updatePerformanceController():   
     

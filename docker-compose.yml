@@ -5,6 +5,8 @@ services:
     image: postgres:alpine
     container_name: local_postgres
     command: postgres -c 'max_connections=50'
+    environment:
+      TZ: 'Europe/Lisbon'
     ports:
       - 5432:5431
     restart: unless-stopped
@@ -20,6 +22,8 @@ services:
     image: netmonit-probe
     container_name: probe
     hostname: localhost
+    environment:
+      TZ: 'Europe/Lisbon'
     depends_on:
       - local_db
     ports: 

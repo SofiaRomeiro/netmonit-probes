@@ -61,8 +61,15 @@ def registration():
     
     print("Pi payload: " + str(payload))
 
-    req = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/registration", json=payload)
+    headers = {"User-Agent" : "Mozilla/5.0 (X11; Linux x86_64) \
+               AppleWebKit/537.36 (KHTML, like Gecko) \
+               Chrome/51.0.2704.103 \
+               Safari/537.36"}
 
-    print(req.status_code)
+    res = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/registration", json=payload, headers=headers)
+
+    print("[LOG Register] Response arrived!")
+
+    print(f"Status code: {res.status_code}")
 
     return "Success on registration!!"

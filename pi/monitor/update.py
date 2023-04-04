@@ -47,6 +47,8 @@ def retrieveDataFromExternalPerformance():
         query = "SELECT * FROM externalPerformance WHERE (creation_date > (%s)::timestamp)"  
         data = (last_updated,)  
         cursor.execute(query, data)
+        #query = "SELECT * FROM externalPerformance"  
+        #cursor.execute(query)
         result = cursor.fetchall()
         cursor.close()
         connection.close() 

@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS externalPerformance CASCADE;
 DROP TABLE IF EXISTS internalPerformance CASCADE;
 
 CREATE TABLE events (
-    creation_date TIMESTAMP WITHOUT TIME ZONE,
+    creation_date TIMESTAMP,
     destination_ip VARCHAR(100) NOT NULL,
     max NUMERIC,
     min NUMERIC,
@@ -17,7 +17,7 @@ CREATE TABLE events (
 );
 
 CREATE TABLE externalPerformance (
-    creation_date TIMESTAMP WITHOUT TIME ZONE,
+    creation_date TIMESTAMP,
     upload_speed NUMERIC,
     download_speed NUMERIC,
     latency NUMERIC,
@@ -28,7 +28,7 @@ CREATE TABLE externalPerformance (
 );
 
 CREATE TABLE internalPerformance (
-    creation_date TIMESTAMP WITHOUT TIME ZONE,
+    creation_date TIMESTAMP,
     protocol VARCHAR(10),
     bytes_sent BIGINT,
     bytes_received BIGINT,

@@ -134,14 +134,18 @@ def testParserAndRegister(testType, res):
 
 def measureExternalPerformance():
 
+    print("[LOG] Running External Performance Measurement...")
+
     speedTestResults = speedTest(None)
-    download = speedTestResults['download']
-    upload = speedTestResults['upload']
+    download = speedTestResults['download']/1000000 #Mbps
+    upload = speedTestResults['upload']/1000000 #Mbps
     latency = speedTestResults['ping']
     destinationHost = speedTestResults['server']['host']
-    timestamp = speedTestResults['timestamp']
+    timestamp = datetime.now() #speedtest timestamp is UTC, which shows wrong results in Portugal
     bytesSent = speedTestResults['bytes_sent']
     bytesReceived = speedTestResults['bytes_received']
+
+    print(f"[LOG External Performance] Results: {str(speedTestResults)}")
 
     registExternalResult(download, upload, latency, destinationHost, timestamp, bytesSent, bytesReceived)
 
@@ -151,5 +155,5 @@ def measureInternalPerformance():
         result_json = json.loads(str(result))
         testParserAndRegister(ProtocolOfPerformanceTest.TCP, result_json)
     except Exception as e:
-        print("[LOG Error] Internal Performance: " + str(e.with_traceback))
+        print("[LOG Error] Internal Performance: " + str(e, encoding='utf-8'))
     
