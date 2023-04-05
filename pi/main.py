@@ -44,9 +44,13 @@ def externalPerformanceScheduler():
 
 @app.on_event("startup")
 @repeat_every(seconds=60*7) # 7 minutes
-def updatePerformanceScheduler():
+def updateInternalPerformanceScheduler():
     monitorRouter.updateInternalPerformanceController()
+
+@app.on_event("startup")
+@repeat_every(seconds=60*7) # 7 minutes
+def updateExternalPerformanceScheduler():
     monitorRouter.updateExternalPerformanceController()
 
-if __name__ == "__main__": 
-    uvicorn.run("main:app", reload=True, host="0.0.0.0", port=env.PORT)
+#if __name__ == "__main__": 
+#    uvicorn.run("main:app", reload=True, host="0.0.0.0", port=env.PORT)

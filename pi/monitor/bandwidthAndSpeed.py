@@ -59,24 +59,28 @@ def registInternalResult(creation_date, protocol, remote_host, jitter_ms, packet
             connection.close()
 
 def iPerfTest(testType):
-    client = iperf3.Client()
-    client.server_hostname = IPERF_SERVER_HOST
-    client.port = IPERF_SERVER_PORT
-    client.json_output = True
 
-    #################################################################
-    #                                                               #
-    # WARNING: iPerf3 has test type mistaken, so if you want udp,   #
-    # you must ask for tcp, and vice-versa                          #
-    #                                                               #
-    #################################################################
+    try:
+        client = iperf3.Client()
+        client.server_hostname = IPERF_SERVER_HOST
+        client.port = IPERF_SERVER_PORT
+        client.json_output = True
 
-    if (testType == ProtocolOfPerformanceTest.TCP):
-        client.protocol = 'udp'
-        return client.run()
-    elif (testType == ProtocolOfPerformanceTest.UDP):
-        client.protocol = 'tcp'
-        return client.run()
+        #################################################################
+        #                                                               #
+        # WARNING: iPerf3 has test type mistaken, so if you want udp,   #
+        # you must ask for tcp, and vice-versa                          #
+        #                                                               #
+        #################################################################
+
+        if (testType == ProtocolOfPerformanceTest.TCP):
+            client.protocol = 'udp'
+            return client.run()
+        elif (testType == ProtocolOfPerformanceTest.UDP):
+            client.protocol = 'tcp'
+            return client.run()
+    except Exception as e:
+        print(f"[LOG iPerf] ERROR: {str(e)}")
 
 def speedTest(server):
     servers=[]

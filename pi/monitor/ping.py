@@ -14,6 +14,7 @@ def resultParser(number):
 
 def getDestinationIP():
     configs = Configurations()
+    print(f"[LOG Ping]Destination IP: {configs.destination_ip}")
     return configs.destination_ip
 
 def ping(ping_count, ping_destination, ping_interface): 
