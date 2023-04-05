@@ -32,20 +32,20 @@ def pingScheduler():
 def updatePingScheduler():
     monitorRouter.updateMonitorController()
 
-@app.on_event("startup")
+'''@app.on_event("startup")
 @repeat_every(seconds=60*5) # 5 minutes
 def internalPerformanceScheduler():
-    monitorRouter.internalPerformanceController()
+    monitorRouter.internalPerformanceController()'''
 
 @app.on_event("startup")
 @repeat_every(seconds=60*5) # 5 minutes
 def externalPerformanceScheduler():
     monitorRouter.externalPerformanceController()
 
-@app.on_event("startup")
+'''@app.on_event("startup")
 @repeat_every(seconds=60*7) # 7 minutes
 def updateInternalPerformanceScheduler():
-    monitorRouter.updateInternalPerformanceController()
+    monitorRouter.updateInternalPerformanceController()'''
 
 @app.on_event("startup")
 @repeat_every(seconds=60*7) # 7 minutes
