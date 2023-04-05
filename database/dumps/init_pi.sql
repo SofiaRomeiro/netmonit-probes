@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS events CASCADE;
 DROP TABLE IF EXISTS externalPerformance CASCADE;
 DROP TABLE IF EXISTS internalPerformance CASCADE;
 
+SET TIME ZONE '+0:00';
+
 CREATE TABLE events (
     creation_date TIMESTAMP,
     destination_ip VARCHAR(100) NOT NULL,
