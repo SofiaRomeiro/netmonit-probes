@@ -5,7 +5,8 @@ from fastapi import APIRouter
 from monitor.configurations import Configurations, TypeOfUpdate, TypeOfPerformanceTest
 from monitor.ping import monitorPing
 from monitor.check_ip import monitorUpdateIp as updateIp
-from monitor.bandwidthAndSpeed import measureInternalPerformance, measureExternalPerformance
+from pi.monitor.internalPerformance import measureInternalPerformance
+from pi.monitor.externalPerformance import measureExternalPerformance
 from pi.monitor.changeDestPing import monitorChangeDestPing as changeDestPing
 from env import SERVER_PORT, SERVER_HOST
 from constants import SUCCESS
@@ -39,10 +40,6 @@ def checkIpController():
 def internalPerformanceController():
     return measureInternalPerformance()
 
-@router.get("/performance/external")
-def externalPerformanceController():
-    return measureExternalPerformance()
-
 @router.get("/update/performance/internal")
 def updateInternalPerformanceController():   
     
@@ -57,6 +54,10 @@ def updateInternalPerformanceController():
         return response.status_code
     else:
         return f"{str(response.status_code)}: {str(response.text)}"
+
+@router.get("/performance/external")
+def externalPerformanceController():
+    return measureExternalPerformance()
     
 @router.get("/update/performance/external")
 def updateExternalPerformanceController():   
