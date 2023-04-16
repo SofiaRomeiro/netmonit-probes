@@ -5,7 +5,7 @@ import netifaces as ni
 from getmac import get_mac_address as getMacAddress
 from constants import *
 from monitor.configurations import Configurations
-from env import PI_MODEL, PI_LOCATION, SERVER_PORT, SERVER_HOST
+from env import PI_MODEL, PI_LOCATION, NAME, SERVER_PORT, SERVER_HOST
 
 def setConfigurations(dg, timestamp):
    configs = Configurations()
@@ -52,6 +52,7 @@ def registration():
     setConfigurations(dg, datetime.now())
 
     payload = {"id": mac,
+                "name": NAME,
                 "location": PI_LOCATION, 
                 "ip": ip, 
                 "interface": interface,

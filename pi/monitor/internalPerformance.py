@@ -8,7 +8,6 @@ from monitor.configurations import ProtocolOfPerformanceTest
 from env import *
 import subprocess as sp
 
-
 def registInternalResult(creation_date, protocol, remote_host, jitter_ms, packet_loss, bytes_sent, bytes_received, sent_Mbps, received_Mbps):
     try:
         #filter by protocol

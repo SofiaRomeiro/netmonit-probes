@@ -38,6 +38,7 @@ def checkIpController():
 
 @router.get("/performance/internal")
 def internalPerformanceController():
+    print("[LOG - Router] Running Internal Performance", flush=True)
     return measureInternalPerformance()
 
 @router.get("/update/performance/internal")
@@ -45,7 +46,7 @@ def updateInternalPerformanceController():
     
     payload = updatePerformanceOperation(TypeOfPerformanceTest.INTERNAL)
 
-    print("[LOG - Router] Performance GET Payload: " + payload, flush=True)
+    print("[LOG - Router] External Performance GET Payload: " + payload, flush=True)
 
     time.sleep(0.01)
     response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance/internal", json=json.loads(payload))

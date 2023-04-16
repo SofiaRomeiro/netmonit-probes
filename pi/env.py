@@ -15,6 +15,4 @@ IPERF_SERVER_HOST = "193.136.132.13"
 IPERF_SERVER_PORT = 2345
 
 #RPi Variables
-PI_MODEL = "Pi4"
-PI_LOCATION = "Home"
 PORT = int(os.getenv('PORT', "8082"))
