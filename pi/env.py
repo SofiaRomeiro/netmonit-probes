@@ -8,10 +8,10 @@ DB_NAME = "local_db"
 
 #Remote Server Variables
 SERVER_PORT = 8080
-SERVER_HOST = "localhost"
+SERVER_HOST = "193.136.132.13"
 
 #iPerf3 Server Variables
-IPERF_SERVER_HOST = "0.0.0.0"
+IPERF_SERVER_HOST = "193.136.132.13"
 IPERF_SERVER_PORT = 2345
 
 #RPi Variables
