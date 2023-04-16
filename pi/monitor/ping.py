@@ -31,7 +31,7 @@ def measureJitter(ping_destination, ping_interface):
     tmp = (t.ping())[0].split(' ')
     result = list(filter(lambda x: ("time" in x), tmp))
     latencies = list(map(lambda x: (x[5:9]), result))[0: len(result)-1]
-    return np.var([float(x) for x in latencies])
+    return np.var([float(x, 3) for x in latencies])
 
 def registerPingResult(destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, jitter, interface):
     try:
