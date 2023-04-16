@@ -23,32 +23,34 @@ def start():
     register.registration()
 
 @app.on_event("startup")
-@repeat_every(seconds=60*2) # 2 minutes
+@repeat_every(seconds=60*1) # 2 minutes
 def pingScheduler():
     monitorRouter.monitorPing()
 
 @app.on_event("startup")
 @repeat_every(seconds=60*5) # 5 minutes
-def performanceScheduler():
-    monitorRouter.internalPerformanceController()
-    monitorRouter.externalPerformanceController()
+def internalPerformanceScheduler():
+    monitorRouter.measureInternalPerformance()
+
+@app.on_event("startup")
+@repeat_every(seconds=60*5) # 5 minutes
+def externalPerformanceScheduler():
+    monitorRouter.measureExternalPerformance()
+
+@app.on_event("startup")
+@repeat_every(seconds=60*5) # 7 minutes
+def updatePingScheduler():
+    monitorRouter.updateMonitor()
 
 @app.on_event("startup")
 @repeat_every(seconds=60*7) # 7 minutes
-def updatePingScheduler():
-    monitorRouter.updateMonitorController()
-    monitorRouter.updateInternalPerformanceController()
-    monitorRouter.updateExternalPerformanceController()
-
-'''@app.on_event("startup")
-@repeat_every(seconds=60*7) # 7 minutes
 def updateInternalPerformanceScheduler():
-    monitorRouter.updateInternalPerformanceController()
+    monitorRouter.updateInternalPerformance()
 
 @app.on_event("startup")
 @repeat_every(seconds=60*7) # 7 minutes
 def updateExternalPerformanceScheduler():
-    monitorRouter.updateExternalPerformanceController()'''
+    monitorRouter.updateExternalPerformance()
 
 if __name__ == "__main__": 
     uvicorn.run("main:app", reload=False, host="0.0.0.0", port=env.PORT)

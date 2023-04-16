@@ -20,9 +20,7 @@ configs = Configurations()
 def pingController():
     return monitorPing()
 
-@router.get("/update/ping")
-def updateMonitorController():
-
+def updateMonitor():
     payload = updatePingOperation()
     print("[LOG - Router] Update GET Payload: " + payload, flush=True)
     response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/monitor", json=json.loads(payload))
@@ -31,6 +29,10 @@ def updateMonitorController():
         return response.status_code
     else:
         return f"{str(response.status_code)}: {str(response.status)}"
+
+@router.get("/update/ping")
+def updateMonitorController():
+    return updateMonitor()    
 
 @router.get("/check-ip")
 def checkIpController():
@@ -41,13 +43,9 @@ def internalPerformanceController():
     print("[LOG - Router] Running Internal Performance", flush=True)
     return measureInternalPerformance()
 
-@router.get("/update/performance/internal")
-def updateInternalPerformanceController():   
-    
+def updateInternalPerformance():
     payload = updatePerformanceOperation(TypeOfPerformanceTest.INTERNAL)
-
-    print("[LOG - Router] External Performance GET Payload: " + payload, flush=True)
-
+    print("[LOG - Router] Internal Performance GET Payload: " + payload, flush=True)
     time.sleep(0.01)
     response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance/internal", json=json.loads(payload))
     if (response.status_code == SUCCESS):
@@ -56,13 +54,15 @@ def updateInternalPerformanceController():
     else:
         return f"{str(response.status_code)}: {str(response.text)}"
 
+@router.get("/update/performance/internal")
+def updateInternalPerformanceController():   
+    return updateInternalPerformance()    
+
 @router.get("/performance/external")
 def externalPerformanceController():
     return measureExternalPerformance()
-    
-@router.get("/update/performance/external")
-def updateExternalPerformanceController():   
-    
+
+def updateExternalPerformance():
     payload = updatePerformanceOperation(TypeOfPerformanceTest.EXTERNAL)
 
     print("[LOG - Router] Performance GET Payload: " + payload, flush=True)
@@ -73,6 +73,10 @@ def updateExternalPerformanceController():
         return response.status_code
     else:
         return f"{str(response.status_code)}: {str(response.text)}"
+    
+@router.get("/update/performance/external")
+def updateExternalPerformanceController():   
+    return updateExternalPerformance()    
 
 # Requests from Server
 

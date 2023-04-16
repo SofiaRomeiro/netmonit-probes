@@ -111,7 +111,6 @@ def measureInternalPerformance():
     except Exception as e:
         print("[LOG Error] Internal Performance: " + str(e, encoding='utf-8'), flush=True)
 
-
 '''def measureInternalPerformance():
     try:
         result = iPerfTest(ProtocolOfPerformanceTest.TCP)
