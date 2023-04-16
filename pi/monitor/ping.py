@@ -96,13 +96,13 @@ def pingFromInterface(interface, number_of_pings):
 
     registerPingResult(
             ping_destination, 
-            round(rtt_max, 3), 
-            round(rtt_min, 3), 
-            round(rtt_avg, 3), 
+            round(float(rtt_max), 3), 
+            round(float(rtt_min), 3), 
+            round(float(rtt_avg), 3), 
             packets_sent, 
             packets_received, 
-            round(packet_loss, 3), 
-            round(jitter, 3), 
+            round(float(packet_loss), 3), 
+            round(float(jitter), 3), 
             interface
         )
 
