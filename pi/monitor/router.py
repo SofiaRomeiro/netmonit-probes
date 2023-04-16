@@ -5,12 +5,12 @@ from fastapi import APIRouter
 from monitor.configurations import Configurations, TypeOfUpdate, TypeOfPerformanceTest
 from monitor.ping import monitorPing
 from monitor.check_ip import monitorUpdateIp as updateIp
-from pi.monitor.internalPerformance import measureInternalPerformance
-from pi.monitor.externalPerformance import measureExternalPerformance
-from pi.monitor.changeDestPing import monitorChangeDestPing as changeDestPing
+from monitor.internalPerformance import measureInternalPerformance
+from monitor.externalPerformance import measureExternalPerformance
+from monitor.changeDestPing import monitorChangeDestPing as changeDestPing
+from monitor.auxiliaryFunctions import *
 from env import SERVER_PORT, SERVER_HOST
 from constants import SUCCESS
-from pi.monitor.auxiliaryFunctions import *
 
 router = APIRouter()
 
