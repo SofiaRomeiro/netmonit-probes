@@ -6,8 +6,6 @@ COPY requirements.txt requirements.txt
 
 RUN pip install --upgrade -r requirements.txt
 
-RUN apt-get install iperf3
-
 COPY . .
 
 CMD ["python", "-u", "./main.py"]
