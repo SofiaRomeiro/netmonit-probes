@@ -37,8 +37,12 @@ def registerPingResult(destination_ip, max, min, avg, packets_sent, packets_rece
     try:
         connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
         cursor = connection.cursor()
-        query = f"INSERT INTO events (creation_date, destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, jitter, interface) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"    
-        data = (datetime.now(), 
+        query = ""
+        data = None
+        if jitter == 'NULL':
+            query = f"INSERT INTO events (creation_date, destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, jitter, interface) \
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'NULL', %s);"
+            data = (datetime.now(), 
                     destination_ip, 
                     max, 
                     min, 
@@ -46,16 +50,28 @@ def registerPingResult(destination_ip, max, min, avg, packets_sent, packets_rece
                     packets_sent, 
                     packets_received, 
                     packet_loss, 
-                    jitter, 
                     interface
                 )
+        else:
+            query = f"INSERT INTO events (creation_date, destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, jitter, interface) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"    
+            data = (datetime.now(), 
+                        destination_ip, 
+                        max, 
+                        min, 
+                        avg, 
+                        packets_sent, 
+                        packets_received, 
+                        packet_loss, 
+                        jitter, 
+                        interface
+                    )            
         cursor.execute(query, data)
         connection.commit()
         cursor.close()
+        print(f"[Ping - registerPingResult] ({datetime.now()}) Result successfully registered", flush=True)
     except Exception as e:
         print(f"[Ping - registerPingResult] An error occurred: {e}", flush=True)
     finally:
-        print(f"[Ping - registerPingResult] ({datetime.now()}) Result successfully registered", flush=True)
         if connection is not None:
             connection.close()
 
