@@ -2,7 +2,6 @@ import sys
 sys.path.append('..')
 import psycopg2
 from datetime import datetime
-import iperf3
 import json
 from constants import *
 from monitor.configurations import ProtocolOfPerformanceTest
@@ -33,12 +32,12 @@ def registInternalResult(creation_date, protocol, remote_host, jitter_ms, packet
         connection.commit()
         cursor.close()
     except Exception as e:
-        print(f"[LOG registInternalResult(...)] An error occurred: {e}")
+        print(f"[LOG registInternalResult(...)] An error occurred: {e}", flush=True)
     finally:
         if connection is not None:
             connection.close()
 
-def iPerfTest(testType):
+'''def iPerfTest(testType):
 
     try:
         client = iperf3.Client()
@@ -52,7 +51,7 @@ def iPerfTest(testType):
             client.protocol = 'udp'
             return client.run()
     except Exception as e:
-        print(f"[LOG iPerf] ERROR: {str(e)}")
+        print(f"[LOG iPerf] ERROR: {str(e)}", flush=True)'''
 
 def parseUDP(res):
     try:

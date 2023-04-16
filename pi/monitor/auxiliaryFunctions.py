@@ -8,7 +8,7 @@ from monitor.update import retrieveDataFromInternalPerformance as updateInternal
 
 def updatePingOperation():
     id, result = updateMonitor()
-    print("[LOG Router - Update Ping] Result: " + str(result))
+    print("[LOG Router - Update Ping] Result: " + str(result), flush=True)
     payload_list = []
     for res in result:
         time = str(res[0])

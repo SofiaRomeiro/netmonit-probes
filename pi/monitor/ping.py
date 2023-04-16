@@ -14,7 +14,7 @@ def resultParser(number):
 
 def getDestinationIP():
     configs = Configurations()
-    print(f"[LOG Ping]Destination IP: {configs.destination_ip}")
+    print(f"[LOG Ping]Destination IP: {configs.destination_ip}", flush=True)
     return configs.destination_ip
 
 def ping(ping_count, ping_destination, ping_interface): 
@@ -43,7 +43,7 @@ def registerPingResult(destination_ip, max, min, avg, packets_sent, packets_rece
         connection.commit()
         cursor.close()
     except Exception as e:
-        print(f"[registerPingResult(...)] An error occurred: {e}")
+        print(f"[registerPingResult(...)] An error occurred: {e}", flush=True)
     finally:
         if connection is not None:
             connection.close()
@@ -56,7 +56,7 @@ def pingFromInterface(interface, number_of_pings):
     result = ping(number_of_pings, ping_destination, interface)
     result_dict = ping_parser.parse(result).as_dict()
 
-    print("[LOG Monitor Ping] Ping result: " + str(result_dict))
+    print("[LOG Monitor Ping] Ping result: " + str(result_dict), flush=True)
 
     rtt_max = resultParser(result_dict[MAX_PING])
     rtt_min = resultParser(result_dict[MIN_PING])
@@ -74,7 +74,7 @@ def pingFromInterface(interface, number_of_pings):
 def monitorPing():
     try:
         gateways = netifaces.gateways()  
-        print("Gateways: " + str(gateways))  
+        print("Gateways: " + str(gateways), flush=True)  
         interface = gateways['default'][netifaces.AF_INET][1]
 
         packet_loss = pingFromInterface(interface, 5)
@@ -88,5 +88,5 @@ def monitorPing():
 
 
     except Exception as e: # when the device is not connected to a network and have no IP, an exception will be throw
-        print(f"[monitorPing()] An error occurred: {e}")
+        print(f"[monitorPing()] An error occurred: {e}", flush=True)
         registerPingResult(getDestinationIP(), 0, 0, 0, 0, 0, 0, gateways['default'][netifaces.AF_INET][1])
