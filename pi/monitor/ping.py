@@ -40,8 +40,8 @@ def registerPingResult(destination_ip, max, min, avg, packets_sent, packets_rece
         query = ""
         data = None
         if jitter == 'NULL':
-            query = f"INSERT INTO events (creation_date, destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, jitter, interface) \
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'NULL', %s);"
+            query = f"INSERT INTO events (creation_date, destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, interface) \
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
             data = (datetime.now(), 
                     destination_ip, 
                     max, 
