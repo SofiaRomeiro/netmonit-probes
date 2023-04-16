@@ -7,5 +7,4 @@ uvicorn==0.20.0
 fastapi==0.92.0
 fastapi_utils==0.2.1 
 requests==2.25.1
-iperf3==0.1.11
 psutil==5.9.2

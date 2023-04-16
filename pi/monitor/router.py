@@ -24,7 +24,7 @@ def pingController():
 def updateMonitorController():
 
     payload = updatePingOperation()
-    print("[LOG - Router] Update GET Payload: " + payload)
+    print("[LOG - Router] Update GET Payload: " + payload, flush=True)
     response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/monitor", json=json.loads(payload))
     if (response.status_code == SUCCESS):
         updateConfigurations(TypeOfUpdate.MONITOR)
