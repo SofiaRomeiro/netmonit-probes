@@ -38,11 +38,11 @@ def registration():
 
     ip, interface = getIPAddress()
 
-    print("IP: " + str(ip))
-    print("Interface: " + str(interface))
+    print("IP: " + str(ip), flush=True)
+    print("Interface: " + str(interface), flush=True)
 
     if ip == None or interface == None:
-        print("[LOG Register] Interface error")
+        print("[LOG Register] Interface error", flush=True)
         exit(1)
 
     mac = getMacAddress() # id is the mac address
@@ -59,7 +59,7 @@ def registration():
                 "gateway": dg
                 }
     
-    print("Pi payload: " + str(payload))
+    print("[Register] Pi payload: " + str(payload), flush=True)
 
     headers = {"User-Agent" : "Mozilla/5.0 (X11; Linux x86_64) \
                AppleWebKit/537.36 (KHTML, like Gecko) \
@@ -68,8 +68,8 @@ def registration():
 
     res = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/registration", json=payload, headers=headers)
 
-    print("[LOG Register] Response arrived!")
+    print("[LOG Register] Response arrived!", flush=True)
 
-    print(f"Status code: {res.status_code}")
+    print(f"Status code: {res.status_code}", flush=True)
 
     return "Success on registration!!"

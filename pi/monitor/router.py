@@ -45,7 +45,7 @@ def updateInternalPerformanceController():
     
     payload = updatePerformanceOperation(TypeOfPerformanceTest.INTERNAL)
 
-    print("[LOG - Router] Performance GET Payload: " + payload)
+    print("[LOG - Router] Performance GET Payload: " + payload, flush=True)
 
     time.sleep(0.01)
     response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance/internal", json=json.loads(payload))
@@ -64,7 +64,7 @@ def updateExternalPerformanceController():
     
     payload = updatePerformanceOperation(TypeOfPerformanceTest.EXTERNAL)
 
-    print("[LOG - Router] Performance GET Payload: " + payload)
+    print("[LOG - Router] Performance GET Payload: " + payload, flush=True)
 
     response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance/external", json=json.loads(payload))
     if (response.status_code == SUCCESS):
@@ -82,7 +82,7 @@ def changeDestPingController(ip_address: str):
 @router.post("/update/ping")
 async def changeDestPingController():
     payload = updatePingOperation()
-    print("[LOG - Router] Update POST Payload: " + payload)
+    print("[LOG - Router] Update POST Payload: " + payload, flush=True)
 
     try:
         response = await requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/monitor", json=json.loads(payload))
@@ -92,14 +92,14 @@ async def changeDestPingController():
         else:
             return f"{str(response.status_code)}: {str(response.status)}"
     except Exception as e:
-        print(f"[LOG] Error: {str(e.with_traceback)}")
+        print(f"[LOG] Error: {str(e.with_traceback)}", flush=True)
 
 @router.post("/update/performance/internal")
 def updatePerformanceController():   
     
     payload = updatePerformanceOperation(TypeOfPerformanceTest.INTERNAL)
 
-    print("[LOG - Router] Performance GET Payload: " + json.loads(payload))
+    print("[LOG - Router] Performance GET Payload: " + json.loads(payload), flush=True)
 
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
@@ -112,5 +112,5 @@ def updatePerformanceController():
         else:
             print(f"Response: {str(response.status_code)}: {str(response.text)}")  
     except Exception as e:
-        print(f"[LOG] Error: {str(e.with_traceback)}")
+        print(f"[LOG] Error: {str(e.with_traceback)}", flush=True)
     

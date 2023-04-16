@@ -87,6 +87,6 @@ def monitorPing():
             pingFromInterface(interface, 5)
 
 
-    except Exception as e: # when the device is not connected to a network and have no IP, an exception will be throw
+    except Exception as e: # when the device is not connected to a network and have no IP, an exception will be thrown
         print(f"[monitorPing()] An error occurred: {e}", flush=True)
         registerPingResult(getDestinationIP(), 0, 0, 0, 0, 0, 0, gateways['default'][netifaces.AF_INET][1])

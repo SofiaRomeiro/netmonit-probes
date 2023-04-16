@@ -56,7 +56,7 @@ def registInternalResult(creation_date, protocol, remote_host, jitter_ms, packet
 def parseUDP(res):
     try:
         creation_date = datetime.now()
-        print(f"[LOG parseUDP {creation_date}] Result: {res}")
+        print(f"[LOG parseUDP {creation_date}] Result: {res}", flush=True)
         return registInternalResult(
                 creation_date, 
                 ProtocolOfPerformanceTest.UDP, 
@@ -69,7 +69,7 @@ def parseUDP(res):
                 'NULL'
             )    
     except Exception as e:
-        print(f"[LOG Error] {str(e)}")
+        print(f"[LOG Error] {str(e)}", flush=True)
 
 def parseTCP(res):
     try:
@@ -88,7 +88,7 @@ def parseTCP(res):
             )
 
     except Exception as e:
-        print(f"[LOG Error] {str(e)}")
+        print(f"[LOG Error] {str(e)}", flush=True)
 
 def testParserAndRegister(testType, res):
     if (testType == ProtocolOfPerformanceTest.TCP):
@@ -110,7 +110,7 @@ def measureInternalPerformance():
             iPerf3Test(ProtocolOfPerformanceTest.TCP)
         )
     except Exception as e:
-        print("[LOG Error] Internal Performance: " + str(e, encoding='utf-8'))
+        print("[LOG Error] Internal Performance: " + str(e, encoding='utf-8'), flush=True)
 
 
 '''def measureInternalPerformance():

@@ -11,7 +11,7 @@ def retrieveDataFromEvents():
     configs = Configurations()  
     last_updated = configs.last_updated_monitor
 
-    print(f"[LOG Update] Last updated at {last_updated}")
+    print(f"[LOG Update] Last updated at {last_updated}", flush=True)
 
     try:
         connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
@@ -23,12 +23,12 @@ def retrieveDataFromEvents():
         cursor.close()
         connection.close() 
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred: {e}", flush=True)
     finally:
         if connection is not None:
             connection.close()
 
-    print(f"[LOG Update - Ping] {result}")
+    print(f"[LOG Update - Ping] {result}", flush=True)
     
     return id, result
 
@@ -39,7 +39,7 @@ def retrieveDataFromExternalPerformance():
     configs = Configurations()  
     last_updated = configs.last_updated_external_performance
 
-    print(f"[LOG Update] Last updated at {last_updated}")
+    print(f"[LOG Update] Last updated at {last_updated}", flush=True)
 
     try:
         connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
@@ -53,12 +53,12 @@ def retrieveDataFromExternalPerformance():
         cursor.close()
         connection.close() 
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred: {e}", flush=True)
     finally:
         if connection is not None:
             connection.close()
 
-    print("Query result:" + str(result))
+    print("Query result:" + str(result), flush=True)
     
     return id, result
 
@@ -69,7 +69,7 @@ def retrieveDataFromInternalPerformance():
     configs = Configurations()  
     last_updated = configs.last_updated_internal_performance
 
-    print(f"[LOG Update Internal Performance] Last updated at {last_updated}\n Now is {datetime.now()}")
+    print(f"[LOG Update Internal Performance] Last updated at {last_updated}\n Now is {datetime.now()}", flush=True)
 
     try:
         connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
@@ -81,11 +81,11 @@ def retrieveDataFromInternalPerformance():
         cursor.close()
         connection.close() 
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred: {e}", flush=True)
     finally:
         if connection is not None:
             connection.close()
 
-    print("Query result:" + str(result))
+    print("Query result:" + str(result), flush=True)
     
     return id, result
