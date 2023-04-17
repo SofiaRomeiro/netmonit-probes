@@ -71,6 +71,6 @@ def registration():
 
     print("[LOG Register] Response arrived!", flush=True)
 
-    print(f"Status code: {res.status_code}", flush=True)
+    print(f"[LOG Register] Status code: {res.status_code}", flush=True)
 
     return "Success on registration!!"

@@ -7,9 +7,9 @@ SET TIME ZONE '+0:00';
 CREATE TABLE events (
     creation_date TIMESTAMP,
     destination_ip VARCHAR(100) NOT NULL,
-    max NUMERIC,
-    min NUMERIC,
-    avg NUMERIC,
+    max BIGINT,
+    min BIGINT,
+    avg BIGINT,
     packets_sent INTEGER,
     packets_received INTEGER,
     packet_loss DECIMAL(4,1),
@@ -20,9 +20,9 @@ CREATE TABLE events (
 
 CREATE TABLE externalPerformance (
     creation_date TIMESTAMP,
-    upload_speed NUMERIC,
-    download_speed NUMERIC,
-    latency NUMERIC,
+    upload_speed BIGINT,
+    download_speed BIGINT,
+    latency BIGINT,
     bytes_sent BIGINT,
     bytes_received BIGINT,
     destination_host VARCHAR(200), 
@@ -34,10 +34,10 @@ CREATE TABLE internalPerformance (
     protocol VARCHAR(10),
     bytes_sent BIGINT,
     bytes_received BIGINT,
-    jitter NUMERIC,
-    packet_loss NUMERIC,    
-    sent_Mbps NUMERIC,
-    received_Mbps NUMERIC,
+    jitter BIGINT,
+    packet_loss BIGINT,    
+    sent_Mbps BIGINT,
+    received_Mbps BIGINT,
     destination_host VARCHAR(200),
     PRIMARY KEY (creation_date)
 );

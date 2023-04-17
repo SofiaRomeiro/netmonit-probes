@@ -13,17 +13,17 @@ def registInternalResult(creation_date, protocol, remote_host, jitter_ms, packet
         #filter by protocol
         query = ""
         data = None
-        if (protocol == ProtocolOfPerformanceTest.TCP):
+        if (protocol == ProtocolOfPerformanceTest.UDP):
             query = f"INSERT INTO internalPerformance (creation_date, protocol, \
             bytes_sent, jitter, packet_loss, sent_Mbps, destination_host) \
             VALUES (%s, %s, %s, %s, %s, %s, %s);"  
-            data = (creation_date, "TCP", bytes_sent, jitter_ms, packet_loss, \
+            data = (creation_date, "UDP", bytes_sent, jitter_ms, packet_loss, \
                 sent_Mbps, remote_host)
         else:        
             query = f"INSERT INTO internalPerformance (creation_date, protocol, \
             bytes_sent, bytes_received, sent_Mbps, received_Mbps, destination_host) \
             VALUES (%s, %s, %s, %s, %s, %s, %s);"    
-            data = (creation_date, "UDP", bytes_sent, bytes_received, \
+            data = (creation_date, "TCP", bytes_sent, bytes_received, \
                     sent_Mbps, received_Mbps, remote_host)            
         connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
         cursor = connection.cursor()
