@@ -14,6 +14,5 @@ echo "$model" >> "./pi/env.py"
 
 sleep 1
 
-sudo apt-get install -y iperf3
 sudo docker-compose build
 sudo docker-compose up
