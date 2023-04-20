@@ -12,8 +12,8 @@ CREATE TABLE events (
     avg BIGINT,
     packets_sent INTEGER,
     packets_received INTEGER,
-    packet_loss DECIMAL(4,1),
-    jitter DECIMAL(4,1),
+    packet_loss DECIMAL(3,1),
+    jitter DECIMAL(6,3),
     interface VARCHAR(20),
     PRIMARY KEY (creation_date)
 );
