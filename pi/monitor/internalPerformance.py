@@ -64,7 +64,7 @@ def parseUDP(res):
                 res['end']['sum']['lost_packets'], 
                 res['end']['sum']['bytes'], 
                 'NULL', 
-                res['end']['sum']['bits_per_second'] / 1000000000, 
+                res['end']['sum']['bits_per_second'] / 1000000, 
                 'NULL'
             )    
     except Exception as e:
@@ -82,8 +82,8 @@ def parseTCP(res):
                 'NULL', 
                 res['end']['sum_sent']['bytes'] * 8, 
                 res['end']['sum_received']['bytes'], 
-                res['end']['sum_sent']['bits_per_second'] / 1000000000, 
-                res['end']['sum_received']['bits_per_second'] / 1000000000
+                res['end']['sum_sent']['bits_per_second'] / 1000000, 
+                res['end']['sum_received']['bits_per_second'] / 1000000
             )
 
     except Exception as e:
@@ -109,16 +109,9 @@ def measureInternalPerformance():
             ProtocolOfPerformanceTest.TCP, 
             iPerf3Test(ProtocolOfPerformanceTest.TCP)
         )
+        testParserAndRegister(
+            ProtocolOfPerformanceTest.UDP, 
+            iPerf3Test(ProtocolOfPerformanceTest.UDP)
+        )
     except Exception as e:
         print("[LOG Error] Internal Performance: " + str(e, encoding='utf-8'), flush=True)
-
-'''def measureInternalPerformance():
-    try:
-        result = iPerfTest(ProtocolOfPerformanceTest.TCP)
-        try:
-            result_json = json.loads(str(result))
-        except Exception as e:
-            print("[LOG - Internal Performance] Parsing error: " + str(e))
-        testParserAndRegister(ProtocolOfPerformanceTest.TCP, result_json)
-    except Exception as e:
-        print("[LOG Error] Internal Performance: " + str(e, encoding='utf-8'))'''
