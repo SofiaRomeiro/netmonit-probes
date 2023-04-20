@@ -96,7 +96,7 @@ def testParserAndRegister(testType, res):
         parseUDP(res)
 
 def iPerf3Test(testType):
-    command = f"sudo iperf3 -c {IPERF_SERVER_HOST} -p {IPERF_SERVER_PORT} -t 30s -i 1 -O 1 -J"
+    command = f"iperf3 -c {IPERF_SERVER_HOST} -p {IPERF_SERVER_PORT} -t 30s -i 1 -O 1 -J"
     if testType == ProtocolOfPerformanceTest.UDP:
         command += " -u"
     result = sp.getoutput(command)

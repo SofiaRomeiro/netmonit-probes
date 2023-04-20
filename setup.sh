@@ -13,6 +13,5 @@ echo "$location" >> "./pi/env.py"
 echo "$model" >> "./pi/env.py"
 
 sleep 1
-
 sudo docker-compose build
 sudo docker-compose up
