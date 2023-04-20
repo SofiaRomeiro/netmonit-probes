@@ -45,7 +45,7 @@ def internalPerformanceController():
 
 def updateInternalPerformance():
     payload = updatePerformanceOperation(TypeOfPerformanceTest.INTERNAL)
-    print("[LOG - Router] Internal Performance GET Payload: " + payload, flush=True)
+    print("\x1b[6;30;42m" + "[LOG - Router] Internal Performance GET Payload: " + payload + "\x1b[0m", flush=True)
     time.sleep(0.01)
     response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/performance/internal", json=json.loads(payload))
     if (response.status_code == SUCCESS):

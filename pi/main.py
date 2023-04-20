@@ -5,6 +5,7 @@ import monitor.router as monitorRouter
 import session.register as register
 import uvicorn
 import env
+from time import sleep
 
 app = FastAPI(title="Network Monitoring")
 
@@ -17,6 +18,8 @@ app.add_middleware(
 )
 
 app.include_router(monitorRouter.router, prefix='/monitor')
+
+sleep(10)
 
 @app.on_event("startup") #call this function when app starts
 def start():

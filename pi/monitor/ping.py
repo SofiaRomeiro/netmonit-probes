@@ -1,5 +1,6 @@
 import netifaces
 from datetime import datetime
+from tcp_latency import measure_latency
 import psycopg2
 import pingparsing
 import statistics
@@ -23,8 +24,8 @@ def ping(ping_count, ping_destination, ping_interface):
     transmitter.count = ping_count
     return transmitter.ping()
 
-def measureJitter(ping_destination, ping_interface):
-    tmp = (ping(10, ping_destination, ping_interface))[0].split(' ')
+def measureJitter(ping_destination):
+    '''tmp = (ping(10, ping_destination, ping_interface))[0].split(' ')
     result = list(filter(lambda x: ("time" in x), tmp))
     latencies = list(map(lambda x: (x[5:9]), result))[0: len(result)-1]
     try:
@@ -32,6 +33,15 @@ def measureJitter(ping_destination, ping_interface):
     except Exception as e:
         print(f"[Ping - measureJitter] An error occurred: {e}", flush=True)
         return 'NULL'
+        '''
+    try:
+        return statistics.variance(measure_latency(ping_destination, runs=10))
+    except Exception as e:
+        print(f"[Ping - measureJitter] An error occurred: {e}", flush=True)
+        return 1000
+
+
+
 
 def registerPingResult(destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, jitter, interface):
     try:
@@ -92,7 +102,7 @@ def pingFromInterface(interface, number_of_pings):
     packets_received = result_dict[RECEIVED]
     packet_loss = result_dict[PACKET_LOSS]
 
-    jitter = measureJitter(ping_destination, interface)
+    jitter = measureJitter(ping_destination)
 
     registerPingResult(
             ping_destination, 

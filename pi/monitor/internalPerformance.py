@@ -103,6 +103,7 @@ def iPerf3Test(testType):
     return json.loads(result)
 
 def measureInternalPerformance():
+    print("\x1b[6;30;42m" + "[LOG Internal Performance] Start Measurement" + "\x1b[0m", flush=True)
     try:
         testParserAndRegister(
             ProtocolOfPerformanceTest.TCP, 

@@ -8,3 +8,4 @@ fastapi==0.92.0
 fastapi_utils==0.2.1 
 requests==2.25.1
 psutil==5.9.2
+tcp-latency==0.0.12
