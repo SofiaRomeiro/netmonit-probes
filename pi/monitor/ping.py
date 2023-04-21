@@ -25,23 +25,11 @@ def ping(ping_count, ping_destination, ping_interface):
     return transmitter.ping()
 
 def measureJitter(ping_destination):
-    '''tmp = (ping(10, ping_destination, ping_interface))[0].split(' ')
-    result = list(filter(lambda x: ("time" in x), tmp))
-    latencies = list(map(lambda x: (x[5:9]), result))[0: len(result)-1]
-    try:
-        return statistics.variance([float(x) for x in latencies])
-    except Exception as e:
-        print(f"[Ping - measureJitter] An error occurred: {e}", flush=True)
-        return 'NULL'
-        '''
     try:
         return statistics.variance(measure_latency(ping_destination, runs=10))
     except Exception as e:
         print(f"[Ping - measureJitter] An error occurred: {e}", flush=True)
-        return 1000
-
-
-
+        return "NA"
 
 def registerPingResult(destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, jitter, interface):
     try:
@@ -49,7 +37,7 @@ def registerPingResult(destination_ip, max, min, avg, packets_sent, packets_rece
         cursor = connection.cursor()
         query = ""
         data = None
-        if jitter == 'NULL':
+        if jitter == 'NA':
             query = f"INSERT INTO events (creation_date, destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, interface) \
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
             data = (datetime.now(), 
@@ -121,7 +109,6 @@ def pingFromInterface(interface, number_of_pings):
 def monitorPing():
     try:
         gateways = netifaces.gateways()  
-        print("Gateways: " + str(gateways), flush=True)  
         interface = gateways['default'][netifaces.AF_INET][1]
 
         packet_loss = pingFromInterface(interface, 5)

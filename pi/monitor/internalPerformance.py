@@ -36,26 +36,9 @@ def registInternalResult(creation_date, protocol, remote_host, jitter_ms, packet
         if connection is not None:
             connection.close()
 
-'''def iPerfTest(testType):
-
-    try:
-        client = iperf3.Client()
-        client.server_hostname = IPERF_SERVER_HOST
-        client.port = IPERF_SERVER_PORT
-        client.json_output = True
-        if (testType == ProtocolOfPerformanceTest.TCP):
-            client.protocol = 'tcp'
-            return client.run()
-        elif (testType == ProtocolOfPerformanceTest.UDP):
-            client.protocol = 'udp'
-            return client.run()
-    except Exception as e:
-        print(f"[LOG iPerf] ERROR: {str(e)}", flush=True)'''
-
 def parseUDP(res):
     try:
         creation_date = datetime.now()
-        print(f"[LOG parseUDP {creation_date}] Result: {res}", flush=True)
         return registInternalResult(
                 creation_date, 
                 ProtocolOfPerformanceTest.UDP, 
@@ -73,7 +56,6 @@ def parseUDP(res):
 def parseTCP(res):
     try:
         creation_date = datetime.now()
-        print(f"[LOG parseTCP {creation_date}] Result: {res}")
         return registInternalResult(
                 creation_date, 
                 ProtocolOfPerformanceTest.TCP, 

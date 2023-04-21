@@ -18,7 +18,7 @@ def registExternalResult(download, upload, latency, destinationHost, timestamp, 
         connection.commit()
         cursor.close()
     except Exception as e:
-        print(f"[registResult(...)] An error occurred: {e}", flush=True)
+        print(f"\x1b[6;30;41m [ERROR - Regist External Result] An error occurred: {e} \x1b[0m", flush=True)
     finally:
         if connection is not None:
             connection.close()
@@ -41,7 +41,7 @@ def speedTest(server):
 
 def measureExternalPerformance():
 
-    print("[LOG] Running External Performance Measurement...", flush=True)
+    print("\x1b[6;30;45m[LOG] Running External Performance Measurement", flush=True + "\x1b[0m")
 
     speedTestResults = speedTest(None)
     # (replacing) speedtest original timestamp is UTC, which shows wrong results in Portugal
