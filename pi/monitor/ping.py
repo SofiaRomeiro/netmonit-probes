@@ -92,17 +92,30 @@ def pingFromInterface(interface, number_of_pings):
 
     jitter = measureJitter(ping_destination)
 
-    registerPingResult(
-            ping_destination, 
-            round(float(rtt_max), 3), 
-            round(float(rtt_min), 3), 
-            round(float(rtt_avg), 3), 
-            packets_sent, 
-            packets_received, 
-            round(float(packet_loss), 3), 
-            round(float(jitter), 3), 
-            interface
-        )
+    if jitter == 'NA':
+        registerPingResult(
+                ping_destination, 
+                round(float(rtt_max), 3), 
+                round(float(rtt_min), 3), 
+                round(float(rtt_avg), 3), 
+                packets_sent, 
+                packets_received, 
+                round(float(packet_loss), 3), 
+                jitter, 
+                interface
+            )
+    else:        
+        registerPingResult(
+                ping_destination, 
+                round(float(rtt_max), 3), 
+                round(float(rtt_min), 3), 
+                round(float(rtt_avg), 3), 
+                packets_sent, 
+                packets_received, 
+                round(float(packet_loss), 3), 
+                round(float(jitter), 3), 
+                interface
+            )
 
     return packet_loss
 
