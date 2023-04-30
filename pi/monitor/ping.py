@@ -130,7 +130,7 @@ def monitorPing():
             interface = gateways[2][1][1]        
             pingFromInterface(interface, 5)
         
-        print("\x1b[6;30;41m [LOG Ping] Ping Successfully Completed\x1b[0m", flush=True)
+        print("\x1b[6;30;42m [LOG Ping] Ping Successfully Completed\x1b[0m", flush=True)
 
 
     except Exception as e: # when the device is not connected to a network and have no IP, an exception will be thrown

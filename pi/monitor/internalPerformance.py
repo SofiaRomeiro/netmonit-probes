@@ -31,7 +31,7 @@ def registInternalResult(creation_date, protocol, remote_host, jitter_ms, packet
         connection.commit()
         cursor.close()
     except Exception as e:
-        print(f"\x1b[6;30;41m [LOG Internal Performance @ {creation_date}] An error ocurred: {str(e)}\x1b[0m", flush=True)
+        print(f"\x1b[6;30;41m [LOG Internal Performance @ {creation_date}] Result registration: An error ocurred: {str(e)}\x1b[0m", flush=True)
     finally:
         if connection is not None:
             connection.close()
@@ -51,7 +51,7 @@ def parseUDP(res):
                 'NULL'
             )    
     except Exception as e:
-        print(f"\x1b[6;30;41m [LOG Internal Performance @ {creation_date}] An error ocurred: {str(e)}\x1b[0m", flush=True)
+        print(f"\x1b[6;30;41m [LOG Internal Performance @ {creation_date}] UDP Parser: An error ocurred: {str(e)}\x1b[0m", flush=True)
 
 def parseTCP(res):
     try:
@@ -69,7 +69,7 @@ def parseTCP(res):
             )
 
     except Exception as e:
-        print(f"\x1b[6;30;41m [LOG Internal Performance @ {creation_date}] An error ocurred: {str(e)}\x1b[0m", flush=True)
+        print(f"\x1b[6;30;41m [LOG Internal Performance @ {creation_date}] TCP Parser: An error ocurred: {str(e)}\x1b[0m", flush=True)
 
 def testParserAndRegister(testType, res):
     if (testType == ProtocolOfPerformanceTest.TCP):
