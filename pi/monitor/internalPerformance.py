@@ -37,6 +37,9 @@ def registInternalResult(creation_date, protocol, remote_host, jitter_ms, packet
             connection.close()
 
 def parseUDP(res):
+
+    print(f"\x1b[6;30;41m [LOG Internal Performance] UDP Parser: Res: {str(res)}\x1b[0m", flush=True)
+
     try:
         creation_date = datetime.now()
         return registInternalResult(
@@ -62,7 +65,7 @@ def parseTCP(res):
                 res['start']['connected'][0]['remote_host'], 
                 'NULL', 
                 'NULL', 
-                res['end']['sum_sent']['bytes'] * 8, 
+                res['end']['sum_sent']['bytes'], 
                 res['end']['sum_received']['bytes'], 
                 res['end']['sum_sent']['bits_per_second'] / 1000000, 
                 res['end']['sum_received']['bits_per_second'] / 1000000
