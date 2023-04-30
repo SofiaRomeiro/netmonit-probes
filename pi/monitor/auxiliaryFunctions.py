@@ -5,37 +5,40 @@ from monitor.update import retrieveDataFromEvents as updateMonitor
 from monitor.update import retrieveDataFromExternalPerformance as updateExternalPerformance
 from monitor.update import retrieveDataFromInternalPerformance as updateInternalPerformance
 
-
 def updatePingOperation():
-    id, result = updateMonitor()
-    print("[LOG Router - Update Ping] Result: " + str(result), flush=True)
-    payload_list = []
-    for res in result:
-        time = str(res[0])
-        max = str(res[2])
-        min = str(res[3])
-        avg = str(res[4])
-        packets_sent = str(res[5])
-        packets_received = str(res[6]) 
-        packet_loss = str(res[7])
-        jitter = str(res[8])
-        tmp = {
-            "id_pi": id,
-            "creation_date": time,
-            "destination_ip": res[1],
-            "max": max,
-            "min": min,
-            "avg": avg,
-            "packets_sent": packets_sent,
-            "packets_received": packets_received, 
-            "packet_loss": packet_loss, 
-            "jitter": jitter,
-            "interface": res[9]
-        }
-        payload_list.append(tmp)
-    
-    payload = json.dumps(payload_list, indent=4)
-    return payload
+    try:
+        id, result = updateMonitor()
+        payload_list = []
+        for res in result:
+            time = str(res[0])
+            max = str(res[2])
+            min = str(res[3])
+            avg = str(res[4])
+            packets_sent = str(res[5])
+            packets_received = str(res[6]) 
+            packet_loss = str(res[7])
+            jitter = str(res[8])
+            tmp = {
+                "id_pi": id,
+                "creation_date": time,
+                "destination_ip": res[1],
+                "max": max,
+                "min": min,
+                "avg": avg,
+                "packets_sent": packets_sent,
+                "packets_received": packets_received, 
+                "packet_loss": packet_loss, 
+                "jitter": jitter,
+                "interface": res[9]
+            }
+            payload_list.append(tmp)
+        
+        payload = json.dumps(payload_list, indent=4)
+        
+        return payload
+    except Exception as e:
+        print(f"\x1b[6;30;41m [LOG updatePingOperation] An error ocurred: {str(e)}\x1b[0m", flush=True)
+        
 
 def updateInternal():
     id, result = updateInternalPerformance()
@@ -94,10 +97,13 @@ def updateExternal():
     return payload
 
 def updatePerformanceOperation(type):
-    if (type == TypeOfPerformanceTest.INTERNAL):
-        return updateInternal()
-    else:
-        return updateExternal()
+    try:
+        if (type == TypeOfPerformanceTest.INTERNAL):
+            return updateInternal()
+        else:
+            return updateExternal()        
+    except Exception as e:
+        print(f"\x1b[6;30;41m [LOG updatePerformanceOperation] An error ocurred: {str(e)}\x1b[0m", flush=True)
 
 def updateConfigurations(type):
     configs = Configurations()

@@ -31,7 +31,7 @@ def registInternalResult(creation_date, protocol, remote_host, jitter_ms, packet
         connection.commit()
         cursor.close()
     except Exception as e:
-        print(f"[LOG registInternalResult(...)] An error occurred: {e}", flush=True)
+        print(f"\x1b[6;30;41m [LOG Internal Performance @ {creation_date}] An error ocurred: {str(e)}\x1b[0m", flush=True)
     finally:
         if connection is not None:
             connection.close()
@@ -51,7 +51,7 @@ def parseUDP(res):
                 'NULL'
             )    
     except Exception as e:
-        print(f"[LOG Error] {str(e)}", flush=True)
+        print(f"\x1b[6;30;41m [LOG Internal Performance @ {creation_date}] An error ocurred: {str(e)}\x1b[0m", flush=True)
 
 def parseTCP(res):
     try:
@@ -69,7 +69,7 @@ def parseTCP(res):
             )
 
     except Exception as e:
-        print(f"[LOG Error] {str(e)}", flush=True)
+        print(f"\x1b[6;30;41m [LOG Internal Performance @ {creation_date}] An error ocurred: {str(e)}\x1b[0m", flush=True)
 
 def testParserAndRegister(testType, res):
     if (testType == ProtocolOfPerformanceTest.TCP):
@@ -85,7 +85,7 @@ def iPerf3Test(testType):
     return json.loads(result)
 
 def measureInternalPerformance():
-    print("\x1b[6;30;42m" + "[LOG Internal Performance] Start Measurement" + "\x1b[0m", flush=True)
+    print("\x1b[6;30;46m" + "[LOG Internal Performance] Start Measurement" + "\x1b[0m", flush=True)
     try:
         testParserAndRegister(
             ProtocolOfPerformanceTest.TCP, 
@@ -96,4 +96,5 @@ def measureInternalPerformance():
             iPerf3Test(ProtocolOfPerformanceTest.UDP)
         )
     except Exception as e:
-        print("[LOG Error] Internal Performance: " + str(e, encoding='utf-8'), flush=True)
+        print(f"\x1b[6;30;41m [LOG Internal Performance] An error ocurred: {str(e)}\x1b[0m", flush=True)
+

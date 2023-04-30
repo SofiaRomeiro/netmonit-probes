@@ -16,7 +16,12 @@ LOCAL_DB_PWD = 'raspberry'
 LOCAL_DB_IP = '172.30.0.10'
 ETH_IFACE = 'eth0'
 WLAN_IFACE = 'wlan0'
+VM_IFACE = 'enp0s3'
 LOCAL_DB_CONNECTION_STRING = "dbname=%s user=%s password=%s host=%s" % (LOCAL_DB_NAME, LOCAL_DB_USER, LOCAL_DB_PWD, LOCAL_DB_IP)
 
 #Response Code
 SUCCESS = 200
+
+#Others
+NO_RESULT = "NA"
+SUCCESS_MESSAGE = "Successful Operation"

@@ -15,7 +15,7 @@ def resultParser(number):
 
 def getDestinationIP():
     configs = Configurations()
-    print(f"[Ping - getDestinationIP]Destination IP: {configs.destination_ip}", flush=True)
+    print(f"\x1b[6;30;46m [LOG Ping] Destination IP: {configs.destination_ip}\x1b[0m", flush=True)
     return configs.destination_ip
 
 def ping(ping_count, ping_destination, ping_interface): 
@@ -28,8 +28,8 @@ def measureJitter(ping_destination):
     try:
         return statistics.variance(measure_latency(ping_destination, runs=10))
     except Exception as e:
-        print(f"[Ping - measureJitter] An error occurred: {e}", flush=True)
-        return "NA"
+        print(f"\x1b[6;30;41m [LOG Ping - Measure Jitter] An error ocurred: {str(e)}\x1b[0m", flush=True)
+        return NO_RESULT
 
 def registerPingResult(destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, jitter, interface):
     try:
@@ -37,7 +37,7 @@ def registerPingResult(destination_ip, max, min, avg, packets_sent, packets_rece
         cursor = connection.cursor()
         query = ""
         data = None
-        if jitter == 'NA':
+        if jitter == NO_RESULT:
             query = f"INSERT INTO events (creation_date, destination_ip, max, min, avg, packets_sent, packets_received, packet_loss, interface) \
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"
             data = (datetime.now(), 
@@ -66,9 +66,8 @@ def registerPingResult(destination_ip, max, min, avg, packets_sent, packets_rece
         cursor.execute(query, data)
         connection.commit()
         cursor.close()
-        print(f"[Ping - registerPingResult] ({datetime.now()}) Result successfully registered", flush=True)
     except Exception as e:
-        print(f"[Ping - registerPingResult] An error occurred: {e}", flush=True)
+        print(f"\x1b[6;30;41m [LOG Ping - DB] An error ocurred: {str(e)}\x1b[0m", flush=True)
     finally:
         if connection is not None:
             connection.close()
@@ -81,8 +80,6 @@ def pingFromInterface(interface, number_of_pings):
     result = ping(number_of_pings, ping_destination, interface)
     result_dict = ping_parser.parse(result).as_dict()
 
-    print("[Ping - pingFromInterface] Ping result: " + str(result_dict), flush=True)
-
     rtt_max = resultParser(result_dict[MAX_PING])
     rtt_min = resultParser(result_dict[MIN_PING])
     rtt_avg = resultParser(result_dict[AVG_PING])
@@ -92,7 +89,7 @@ def pingFromInterface(interface, number_of_pings):
 
     jitter = measureJitter(ping_destination)
 
-    if jitter == 'NA':
+    if jitter == NO_RESULT:
         registerPingResult(
                 ping_destination, 
                 round(float(rtt_max), 3), 
@@ -132,8 +129,10 @@ def monitorPing():
             
             interface = gateways[2][1][1]        
             pingFromInterface(interface, 5)
+        
+        print("\x1b[6;30;41m [LOG Ping] Ping Successfully Completed\x1b[0m", flush=True)
 
 
     except Exception as e: # when the device is not connected to a network and have no IP, an exception will be thrown
-        print(f"[Ping - monitorPing] An error occurred: {e}", flush=True)
+        print(f"\x1b[6;30;41m [LOG Ping] An error ocurred: {str(e)}\x1b[0m", flush=True)
         registerPingResult(getDestinationIP(), 0, 0, 0, 0, 0, 0, gateways['default'][netifaces.AF_INET][1])

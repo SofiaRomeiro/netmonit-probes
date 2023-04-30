@@ -24,9 +24,9 @@ def getIPAddress():
     elif WLAN_IFACE in tmp:
         #ifaces[WLAN_IFACE][1][1].split('%')[0] #IPv6
         return ifaces[WLAN_IFACE][0][1], WLAN_IFACE #IPv4
-    elif 'enp0s3' in tmp:
-        #ifaces['enp1s0'][1][1].split('%')[0] #IPv6
-        return ifaces['enp0s3'][0][1], 'enp0s3' #IPv4
+    elif VM_IFACE in tmp:
+        #ifaces[VM_IFACE][1][1].split('%')[0] #IPv6
+        return ifaces[VM_IFACE][0][1], VM_IFACE #IPv4
     else:
         return None, None
 
@@ -36,41 +36,36 @@ def getGateway():
 
 def registration():
 
-    ip, interface = getIPAddress()
+    try:
+        ip, interface = getIPAddress()
 
-    print("IP: " + str(ip), flush=True)
-    print("Interface: " + str(interface), flush=True)
+        if ip == None or interface == None:
+            print(f"\x1b[6;30;41m [ERROR - Registration] Probe Not Connected \x1b[0m", flush=True)
+            exit(1)
 
-    if ip == None or interface == None:
-        print("[LOG Register] Interface error", flush=True)
-        exit(1)
+        mac = getMacAddress() # id is the mac address
+        dg = getGateway()
+        setConfigurations(dg, datetime.now())
 
-    mac = getMacAddress() # id is the mac address
+        payload = {"id": mac,
+                    "name": NAME,
+                    "location": PI_LOCATION, 
+                    "ip": ip, 
+                    "interface": interface,
+                    "model": PI_MODEL,
+                    "gateway": dg
+                    }    
+        headers = {"User-Agent" : "Mozilla/5.0 (X11; Linux x86_64) \
+                AppleWebKit/537.36 (KHTML, like Gecko) \
+                Chrome/51.0.2704.103 \
+                Safari/537.36"}
+        
+        print(f"\x1b[6;30;46m [LOG - Registration] Probe's Payload: {str(payload)} \x1b[0m", flush=True)
 
-    dg = getGateway()
+        requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/registration", json=payload, headers=headers)
 
-    setConfigurations(dg, datetime.now())
-
-    payload = {"id": mac,
-                "name": NAME,
-                "location": PI_LOCATION, 
-                "ip": ip, 
-                "interface": interface,
-                "model": PI_MODEL,
-                "gateway": dg
-                }
+        print(f"\x1b[6;30;42m [LOG - Registration] Probe Successfully Registered \x1b[0m", flush=True)
+        return SUCCESS_MESSAGE
     
-    print("[Register] Pi payload: " + str(payload), flush=True)
-
-    headers = {"User-Agent" : "Mozilla/5.0 (X11; Linux x86_64) \
-               AppleWebKit/537.36 (KHTML, like Gecko) \
-               Chrome/51.0.2704.103 \
-               Safari/537.36"}
-
-    res = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/registration", json=payload, headers=headers)
-
-    print("[LOG Register] Response arrived!", flush=True)
-
-    print(f"[LOG Register] Status code: {res.status_code}", flush=True)
-
-    return "Success on registration!!"
+    except Exception as e:
+        print(f"\x1b[6;30;41m [ERROR - Registration] An error ocurred: {str(e)} \x1b[0m", flush=True)

@@ -10,9 +10,7 @@ def retrieveDataFromEvents():
     id = getMacAddress()
     configs = Configurations()  
     last_updated = configs.last_updated_monitor
-
-    print(f"[LOG Update] Last updated at {last_updated}", flush=True)
-
+    print(f"\x1b[6;30;46m [LOG retrieveDataFromEvents] Events: Last updated at {last_updated}\x1b[0m", flush=True)
     try:
         connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
         cursor = connection.cursor()
@@ -22,14 +20,12 @@ def retrieveDataFromEvents():
         result = cursor.fetchall()
         cursor.close()
         connection.close() 
+        print(f"\x1b[6;30;42m [LOG retrieveDataFromEvents] Data Successfully Retrieved \x1b[0m", flush=True)
     except Exception as e:
-        print(f"An error occurred: {e}", flush=True)
+        print(f"\x1b[6;30;41m [LOG retrieveDataFromEvents] An error occurred: {e} \x1b[0m", flush=True)
     finally:
         if connection is not None:
-            connection.close()
-
-    print(f"[LOG Update - Ping] {result}", flush=True)
-    
+            connection.close()    
     return id, result
 
 def retrieveDataFromExternalPerformance():
@@ -38,28 +34,22 @@ def retrieveDataFromExternalPerformance():
     id = getMacAddress()
     configs = Configurations()  
     last_updated = configs.last_updated_external_performance
-
-    print(f"[LOG Update] Last updated at {last_updated}", flush=True)
-
+    print(f"\x1b[6;30;46m [LOG retrieveDataFromExternalPerformance] External Performance: Last updated at {last_updated}\x1b[0m", flush=True)
     try:
         connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
         cursor = connection.cursor()
         query = "SELECT * FROM externalPerformance WHERE (creation_date > (%s)::timestamp)"  
         data = (last_updated,)  
         cursor.execute(query, data)
-        #query = "SELECT * FROM externalPerformance"  
-        #cursor.execute(query)
         result = cursor.fetchall()
         cursor.close()
         connection.close() 
+        print(f"\x1b[6;30;42m [LOG retrieveDataFromExternalPerformance] Data Successfully Retrieved \x1b[0m", flush=True)
     except Exception as e:
-        print(f"An error occurred: {e}", flush=True)
+        print(f"\x1b[6;30;41m [LOG retrieveDataFromExternalPerformance] An error occurred: {e} \x1b[0m", flush=True)
     finally:
         if connection is not None:
-            connection.close()
-
-    print("Query result:" + str(result), flush=True)
-    
+            connection.close()    
     return id, result
 
 def retrieveDataFromInternalPerformance():
@@ -69,7 +59,7 @@ def retrieveDataFromInternalPerformance():
     configs = Configurations()  
     last_updated = configs.last_updated_internal_performance
 
-    print(f"[LOG Update Internal Performance] Last updated at {last_updated}\n Now is {datetime.now()}", flush=True)
+    print(f"\x1b[6;30;46m [LOG retrieveDataFromInternalPerformance] Internal Performance: Last updated at {last_updated}\x1b[0m", flush=True)
 
     try:
         connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
@@ -80,12 +70,10 @@ def retrieveDataFromInternalPerformance():
         result = cursor.fetchall()
         cursor.close()
         connection.close() 
+        print(f"\x1b[6;30;42m [LOG retrieveDataFromInternalPerformance] Data Successfully Retrieved \x1b[0m", flush=True)
     except Exception as e:
-        print(f"An error occurred: {e}", flush=True)
+        print(f"\x1b[6;30;41m [LOG retrieveDataFromInternalPerformance] An error occurred: {e} \x1b[0m", flush=True)
     finally:
         if connection is not None:
-            connection.close()
-
-    print("Query result:" + str(result), flush=True)
-    
+            connection.close()    
     return id, result

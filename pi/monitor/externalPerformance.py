@@ -41,21 +41,25 @@ def speedTest(server):
 
 def measureExternalPerformance():
 
-    print("\x1b[6;30;45m[LOG] Running External Performance Measurement", flush=True + "\x1b[0m")
+    print("\x1b[6;30;46m[LOG] Running External Performance Measurement \x1b[0m", flush=True)
 
-    speedTestResults = speedTest(None)
-    # (replacing) speedtest original timestamp is UTC, which shows wrong results in Portugal
-    timestamp = datetime.now()
+    try:
 
-    print(f"[LOG External Performance @ {timestamp}] Results: {str(speedTestResults)}", flush=True)
+        speedTestResults = speedTest(None)
+        # (replacing) speedtest original timestamp is UTC, which shows wrong results in Portugal
+        timestamp = datetime.now()
 
-    registExternalResult(
-        speedTestResults['download']/1000000, #Mbps
-        speedTestResults['upload']/1000000, #Mbps
-        speedTestResults['ping'], #measures latency 
-        speedTestResults['server']['host'], 
-        timestamp, 
-        speedTestResults['bytes_sent'], 
-        speedTestResults['bytes_received']
-    )
+        registExternalResult(
+            speedTestResults['download']/1000000, #Mbps
+            speedTestResults['upload']/1000000, #Mbps
+            speedTestResults['ping'], #measures latency 
+            speedTestResults['server']['host'], 
+            timestamp, 
+            speedTestResults['bytes_sent'], 
+            speedTestResults['bytes_received']
+        )
+        print(f"\x1b[6;30;42m [LOG External Performance @ {timestamp}] Finished Measures \x1b[0m", flush=True)
+    except Exception as e:
+        print(f"\x1b[6;30;41m [LOG External Performance @ {timestamp}] An error ocurred: {str(e)}\x1b[0m", flush=True)
+        
 
