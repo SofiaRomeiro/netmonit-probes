@@ -48,7 +48,7 @@ def updateExternalPerformance():
         print(f"\x1b[6;30;43m [LOG Router - updateExternalPerformance] Update Configurations Unsuccessful\x1b[0m", flush=True)
         return f"{str(response.status_code)}: {str(response.text)}"
 
-def wifiTest():
+def updateWifiTest():
     payload = updateWifiTestOperation()
     response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/wifitest", json=json.loads(payload))
     if (response.status_code == SUCCESS):

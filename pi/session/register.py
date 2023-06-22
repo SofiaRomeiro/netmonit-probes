@@ -13,6 +13,7 @@ def setConfigurations(dg, timestamp):
    configs.last_updated_monitor = timestamp
    configs.last_updated_external_performance = timestamp
    configs.last_updated_internal_performance = timestamp
+   configs.last_updated_wifi_test = timestamp
 
 def getIPAddress():
     ifaces = ps.net_if_addrs()
