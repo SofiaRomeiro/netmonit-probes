@@ -77,3 +77,28 @@ def retrieveDataFromInternalPerformance():
         if connection is not None:
             connection.close()    
     return id, result
+
+def retrieveDataFromWifiTest():
+    result = None
+    id = getMacAddress()
+    configs = Configurations()  
+    last_updated = configs.last_updated_wifi_test
+
+    print(f"\x1b[6;30;46m [LOG retrieveDataFromWifiTest] Wifi Test: Last updated at {last_updated}\x1b[0m", flush=True)
+
+    try:
+        connection = psycopg2.connect(LOCAL_DB_CONNECTION_STRING)
+        cursor = connection.cursor()
+        query = "SELECT * FROM wifiTest WHERE (creation_date > (%s)::timestamp)"  
+        data = (last_updated,)  
+        cursor.execute(query, data)
+        result = cursor.fetchall()
+        cursor.close()
+        connection.close() 
+        print(f"\x1b[6;30;42m [LOG retrieveDataFromWifiTest] Data Successfully Retrieved \x1b[0m", flush=True)
+    except Exception as e:
+        print(f"\x1b[6;30;41m [LOG retrieveDataFromWifiTest] An error occurred: {e} \x1b[0m", flush=True)
+    finally:
+        if connection is not None:
+            connection.close()    
+    return id, result

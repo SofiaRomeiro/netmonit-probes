@@ -48,6 +48,18 @@ def updateExternalPerformance():
         print(f"\x1b[6;30;43m [LOG Router - updateExternalPerformance] Update Configurations Unsuccessful\x1b[0m", flush=True)
         return f"{str(response.status_code)}: {str(response.text)}"
 
+def wifiTest():
+    payload = updateWifiTestOperation()
+    response = requests.post(f"http://{SERVER_HOST}:{SERVER_PORT}/api/probes/update/wifitest", json=json.loads(payload))
+    if (response.status_code == SUCCESS):
+        updateConfigurations(TypeOfUpdate.WIFI)
+        print(f"\x1b[6;30;42m [LOG Router - updateMonitor] WiFi Results Successfully Registered on Server\x1b[0m", flush=True)
+        return response.status_code
+    else:
+        print(f"\x1b[6;30;43m [LOG Router - updateMonitor] Update Configurations Unsuccessful\x1b[0m", flush=True)
+        return f"{str(response.status_code)}: {str(response.status)}"
+
+
 #####################################################
 #                                                   #
 #                    GET Requests                   #

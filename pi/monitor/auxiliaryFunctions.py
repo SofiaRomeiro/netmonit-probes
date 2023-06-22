@@ -4,6 +4,7 @@ from monitor.configurations import TypeOfUpdate, Configurations, TypeOfPerforman
 from monitor.update import retrieveDataFromEvents as updateMonitor
 from monitor.update import retrieveDataFromExternalPerformance as updateExternalPerformance
 from monitor.update import retrieveDataFromInternalPerformance as updateInternalPerformance
+from monitor.update import retrieveDataFromWifiTest as updateWifiTest
 
 def updatePingOperation():
     try:
@@ -105,6 +106,32 @@ def updatePerformanceOperation(type):
     except Exception as e:
         print(f"\x1b[6;30;41m [LOG updatePerformanceOperation] An error ocurred: {str(e)}\x1b[0m", flush=True)
 
+def updateWifiTestOperation():
+    id, result = updateWifiTest()
+    payload_list = []
+    for res in result:
+        creation_date = str(res[0]) 
+        channel = str(res[1])
+        frequency = str(res[2])
+        quality = str(res[3])
+        signal_level = str(res[4])
+        encryption_mode = str(res[5])
+        essid = str(res[6])
+        tmp = {
+            "id_pi": id,
+            "creation_date": creation_date,
+            "channel": channel,
+            "frequency": frequency,
+            "quality": quality,
+            "signal_level": signal_level,
+            "encryption_mode": encryption_mode,
+            "essid": essid
+        }
+        payload_list.append(tmp)
+    
+    payload = json.dumps(payload_list, indent=4)
+    return payload
+
 def updateConfigurations(type):
     configs = Configurations()
     if (type == TypeOfUpdate.MONITOR):
@@ -113,3 +140,5 @@ def updateConfigurations(type):
         configs.last_updated_external_performance = datetime.now()
     elif (type == TypeOfUpdate.INTERNAL_PERFORMANCE):
         configs.last_updated_internal_performance = datetime.now()
+    elif (type == TypeOfUpdate.WIFI):
+        configs.last_updated_wifi_test = datetime.now()

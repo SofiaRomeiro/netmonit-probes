@@ -48,6 +48,12 @@ def externalPerformanceScheduler():
     monitorRouter.measureExternalPerformance()
     monitorRouter.updateExternalPerformance()
 
+@app.on_event("startup")
+@repeat_every(seconds=60*5) # 5 minutes
+def externalPerformanceScheduler():
+    monitorRouter.measureExternalPerformance()
+    monitorRouter.updateExternalPerformance()
+
 '''
 @app.on_event("startup")
 @repeat_every(seconds=60*60*24*7) # 1 week
