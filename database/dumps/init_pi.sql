@@ -41,3 +41,15 @@ CREATE TABLE internalPerformance (
     destination_host VARCHAR(200),
     PRIMARY KEY (creation_date)
 );
+
+CREATE TABLE wifiTest (
+    creation_date TIMESTAMP,
+    ap VARCHAR(100) NOT NULL,
+    channel BIGINT,
+    frequency BIGINT,
+    quality VARCHAR(20),
+    signal_level VARCHAR(20),
+    encryption_mode VARCHAR(20),
+    essid VARCHAR(100),
+    PRIMARY KEY (creation_date)
+);
