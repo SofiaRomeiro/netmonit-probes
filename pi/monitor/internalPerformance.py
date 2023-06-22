@@ -94,10 +94,10 @@ def measureInternalPerformance():
             ProtocolOfPerformanceTest.TCP, 
             iPerf3Test(ProtocolOfPerformanceTest.TCP)
         )
-        testParserAndRegister(
+        '''testParserAndRegister(
             ProtocolOfPerformanceTest.UDP, 
             iPerf3Test(ProtocolOfPerformanceTest.UDP)
-        )
+        )'''
     except Exception as e:
         print(f"\x1b[6;30;41m [LOG Internal Performance] An error ocurred: {str(e)}\x1b[0m", flush=True)
 

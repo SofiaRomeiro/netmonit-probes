@@ -24,9 +24,13 @@ def ping(ping_count, ping_destination, ping_interface):
     transmitter.count = ping_count
     return transmitter.ping()
 
-def measureJitter(ping_destination):
+def measureJitter(ping_destination, ping_interface):
     try:
-        return statistics.variance(measure_latency(ping_destination, runs=10))
+        rtt_set = []
+        for i in range(0, 10):
+            res = ping(1, ping_destination, ping_interface)
+            rtt_set.append((ping_parser.parse(res).as_dict())[AVG_PING]/2)
+        return statistics.variance(rtt_set)
     except Exception as e:
         print(f"\x1b[6;30;41m [LOG Ping - Measure Jitter] An error ocurred: {str(e)}\x1b[0m", flush=True)
         return NO_RESULT
