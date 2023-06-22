@@ -50,9 +50,9 @@ def externalPerformanceScheduler():
 
 @app.on_event("startup")
 @repeat_every(seconds=60*5) # 5 minutes
-def externalPerformanceScheduler():
-    monitorRouter.measureExternalPerformance()
-    monitorRouter.updateExternalPerformance()
+def WifiTestScheduler():
+    monitorRouter.wifiTest()
+    monitorRouter.updateWifiTest()
 
 '''
 @app.on_event("startup")
