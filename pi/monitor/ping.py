@@ -91,7 +91,7 @@ def pingFromInterface(interface, number_of_pings):
     packets_received = result_dict[RECEIVED]
     packet_loss = result_dict[PACKET_LOSS]
 
-    jitter = measureJitter(ping_destination)
+    jitter = measureJitter(ping_destination, interface)
 
     if jitter == NO_RESULT:
         registerPingResult(
