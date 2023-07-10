@@ -8,6 +8,8 @@ RUN pip install --upgrade -r requirements.txt
 
 RUN apt-get update && apt-get install -y iperf3
 
+RUN apt-get install -y wireless-tools
+
 COPY . .
 
 CMD ["python", "-u", "./main.py"]

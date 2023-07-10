@@ -23,6 +23,8 @@ services:
     container_name: probe
     hostname: localhost
     privileged: true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       TZ: 'Europe/Lisbon'
     depends_on:
