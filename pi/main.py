@@ -21,6 +21,13 @@ app.include_router(monitorRouter.router, prefix='/monitor')
 
 sleep(10)
 
+'''
+@app.on_event("startup")
+@repeat_every(seconds=60*60*24*7) # 1 week
+def databaseCleanerScheduler():
+    # TODO create the db cleaner
+'''
+
 @app.on_event("startup") #call this function when app starts
 def start():
     register.registration()
@@ -52,13 +59,6 @@ def externalPerformanceScheduler():
 def WifiTestScheduler():
     monitorRouter.monitorWiFi()
     monitorRouter.updateWifiTest()
-
-'''
-@app.on_event("startup")
-@repeat_every(seconds=60*60*24*7) # 1 week
-def databaseCleanerScheduler():
-    # TODO create the db cleaner
-'''
 
 if __name__ == "__main__": 
     uvicorn.run("main:app", reload=False, host="0.0.0.0", port=env.PORT)
