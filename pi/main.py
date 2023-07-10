@@ -35,7 +35,6 @@ def pingScheduler():
 def updatePingScheduler():
     monitorRouter.updateMonitor()
 
-
 @app.on_event("startup")
 @repeat_every(seconds=60*5) # 5 minutes
 def internalPerformanceScheduler():
