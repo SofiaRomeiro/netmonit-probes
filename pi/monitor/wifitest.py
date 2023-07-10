@@ -84,10 +84,10 @@ def registResult(output):
 def monitorWiFi():
 
     try:
-
         res = wifiTest()
         output = outputParser(res)
         registResult(output)
+        print("\x1b[6;30;42m [LOG Ping] Wifi Monitoring Successfully Completed\x1b[0m", flush=True)
 
     except Exception as e:
 
