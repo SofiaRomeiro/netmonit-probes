@@ -6,7 +6,7 @@ from monitor.configurations import Configurations, TypeOfUpdate, TypeOfPerforman
 from monitor.ping import monitorPing
 from monitor.internalPerformance import measureInternalPerformance
 from monitor.externalPerformance import measureExternalPerformance
-from monitor.wifitest import wifiTest
+from monitor.wifitest import monitorWiFi
 from monitor.changeDestPing import monitorChangeDestPing as changeDestPing
 from monitor.auxiliaryFunctions import *
 from env import SERVER_PORT, SERVER_HOST
