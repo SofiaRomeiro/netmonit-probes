@@ -111,15 +111,17 @@ def updateWifiTestOperation():
     payload_list = []
     for res in result:
         creation_date = str(res[0]) 
-        channel = str(res[1])
-        frequency = str(res[2])
-        quality = str(res[3])
-        signal_level = str(res[4])
-        encryption_mode = str(res[5])
-        essid = str(res[6])
+        ap = str(res[1])
+        channel = str(res[2])
+        frequency = str(res[3])
+        quality = str(res[4])
+        signal_level = str(res[5])
+        encryption_mode = str(res[6])
+        essid = str(res[7])
         tmp = {
             "id_pi": id,
             "creation_date": creation_date,
+            "ap": ap,
             "channel": channel,
             "frequency": frequency,
             "quality": quality,
