@@ -5,7 +5,7 @@ from constants import *
 
 def wifiTest():
 
-    iwlist_scan = subprocess.check_output("sudo iwlist wlan0 scan", shell=True, stderr=subprocess.STDOUT)
+    iwlist_scan = subprocess.check_output("iwlist wlan0 scan", shell=True, stderr=subprocess.STDOUT)
 
     return iwlist_scan.decode('utf-8')
     
